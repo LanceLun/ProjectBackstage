@@ -1,0 +1,230 @@
+﻿@model Discount.dll.Models.ViewModels.CouponEditVM
+
+@{
+    ViewBag.Title = "編輯優惠券";
+    SelectList discountType = ViewBag.DiscountType as SelectList;
+    SelectList conditionType = ViewBag.ConditionType as SelectList;
+}
+
+<div class="d-flex justify-content-between align-items-end">
+    <h2>編輯優惠券</h2>
+    <div>
+        @Html.ActionLink("回優惠券首頁", "Index", null, new { @class = "fs-5" })
+    </div>
+</div>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.CouponId)
+
+<div class="row">
+    <hr />
+        <div class="alert alert-danger d-none">
+            <ul>
+            </ul>
+        </div>
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <div class="border border-2 border-dark p-0">
+        <div class="text-bg-dark py-2 px-4 fs-5">基本設定</div>
+        <div class="row row-cols-2 p-4">
+            <div class="mb-3">
+                @Html.LabelFor(model => model.CouponCategoryId, "優惠券種類", htmlAttributes: new { @class = "form-label" })
+                @Html.DropDownList("CouponCategoryId", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.CouponCategoryId, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="mb-3">
+                @Html.LabelFor(model => model.CouponName, "優惠券名稱", htmlAttributes: new { @class = "form-label" })
+                @Html.EditorFor(model => model.CouponName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.CouponName, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="mb-3">
+                @Html.LabelFor(model => model.MinimumPurchaseAmount, "優惠券使用門檻(元)", htmlAttributes: new { @class = "form-label" })
+                @Html.EditorFor(model => model.MinimumPurchaseAmount, new { htmlAttributes = new { @class = "form-control", min = "0", value = "0" } })
+                @Html.ValidationMessageFor(model => model.MinimumPurchaseAmount, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="mb-3">
+                @Html.LabelFor(model => model.PersonMaxUsage, "每人使用次數", htmlAttributes: new { @class = "form-label" })
+                @Html.EditorFor(model => model.PersonMaxUsage, new { htmlAttributes = new { @class = "form-control", min = "1", value = "1" } })
+                @Html.ValidationMessageFor(model => model.PersonMaxUsage, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+
+
+    <div class="border border-2 border-dark p-0">
+        <div class="text-bg-dark py-2 px-4 fs-5">日期設定</div>
+        <div class="row row-cols-2 p-4">
+            <div class="mb-3 ">
+                @Html.LabelFor(model => model.StartDate, "開始日期", htmlAttributes: new { @class = "form-label" })
+                @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control", Value = Model.StartDate.ToString("yyyy-MM-dd") } })
+                @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
+            </div>
+
+            @Html.HiddenFor(model => model.EndType)
+
+            <div class="mb-3">
+                @Html.LabelFor(model => model.EndDays, "結束天數", htmlAttributes: new { @class = "form-label" })
+                @Html.EditorFor(model => model.EndDays, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.EndDays, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="mb-3">
+                @Html.LabelFor(model => model.EndDate, "結束日期", htmlAttributes: new { @class = "form-label" })
+                @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control", Value = Model.EndDate.HasValue ? Model.EndDate.Value.ToString("yyyy-MM-dd") : "" } })
+                @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+
+    <div class="border border-2 border-dark p-0">
+        <div class="text-bg-dark py-2 px-4 fs-5">優惠設定</div>
+        <div class="row row-cols-2 p-4">
+            <div class="mb-3">
+                @Html.LabelFor(model => model.DiscountType, "優惠類型", htmlAttributes: new { @class = "form-label" })
+                @Html.DropDownListFor(model => model.DiscountType, (SelectList)ViewBag.DiscountType, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.DiscountType, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="mb-3">
+                @Html.LabelFor(model => model.DiscountValue, "優惠價值", htmlAttributes: new { @class = "form-label" })
+                @Html.EditorFor(model => model.DiscountValue, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.DiscountValue, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <div id="RequirementBox" class="border border-2 border-dark p-0">
+        <div class="text-bg-dark py-2 px-4 fs-5">優惠券獲得條件設定</div>
+        <div class="row row-cols-2 p-4">
+            <div class="mb-3">
+                @Html.LabelFor(model => model.RequirementType, "獲得條件類型", htmlAttributes: new { @class = "form-label" })
+                @Html.DropDownList("RequirementType", conditionType, "選擇條件類型", htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.RequirementType, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="mb-3">
+                @Html.LabelFor(model => model.Requirement, "獲得條件價值", htmlAttributes: new { @class = "form-label" })
+                @Html.EditorFor(model => model.Requirement, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Requirement, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="mb-3">
+                @Html.LabelFor(model => model.RequiredProjectTagID, "獲得條件商品", htmlAttributes: new { @class = "form-label" })
+                @Html.DropDownList("RequiredProjectTagID", null, "全部商品", htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.RequiredProjectTagID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+
+    <div class="my-4">
+        <input id="save" type="button" value="儲存" class="btn btn-primary" />
+    </div>
+</div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(function () {
+            const CouponCategoryIdInput = $("#CouponCategoryId");
+            const CouponNameInput = $("#CouponName");
+            const MinimumPurchaseAmountInput = $("#MinimumPurchaseAmount");
+            const PersonMaxUsageInput = $("#PersonMaxUsage");
+            const StartDateInput = $("#StartDate");
+            const EndTypeInput = $("#EndType");
+            const EndDaysInput = $("#EndDays");
+            const EndDateInput = $("#EndDate");
+            const DiscountTypeInput = $("#DiscountType");
+            const DiscountValueInput = $("#DiscountValue");
+            const RequirementTypeInput = $("#RequirementType");
+            const RequirementInput = $("#Requirement");
+            const RequiredProjectTagIDInput = $("#RequiredProjectTagID");
+            const RequirementBox = $("#RequirementBox");
+
+            EndDateInput.datepicker({ dateFormat: 'yy/mm/dd' });
+            StartDateInput.datepicker({ dateFormat: 'yy/mm/dd' });
+
+            dataChange();
+
+            CouponCategoryIdInput.change(dataChange);
+
+
+            function dataChange() {
+                let selectedValue = CouponCategoryIdInput.val(); // 獲取所選選項的值
+                // 執行相應的動作或邏輯
+                if (selectedValue === "1") {
+                    EndTypeInput.prop("checked", false);
+                    dateToggle()
+                    RequirementToggle(false)
+                } else if (selectedValue === "2" || selectedValue === "3") {
+                    EndTypeInput.prop("checked", true);
+                    dateToggle()
+                    RequirementToggle(false)
+                } else if (selectedValue === "4") {
+                    EndTypeInput.prop("checked", true);
+                    dateToggle()
+                    RequirementToggle(true)
+                }
+            }
+            function dateToggle() {
+                if (EndTypeInput.prop("checked")) {
+                    EndDaysInput.parent("div").removeClass("d-none");
+                    EndDateInput.parent("div").addClass("d-none");
+                } else {
+                    EndDaysInput.parent("div").addClass("d-none");
+                    EndDateInput.parent("div").removeClass("d-none");
+                }
+            }
+            function RequirementToggle(is4) {
+                if (is4) {
+                    RequirementBox.removeClass("d-none")
+                }
+                else {
+                    RequirementBox.addClass("d-none")
+
+                }
+            }
+            $("#save").on("click", function () {
+                $.ajax({
+                    url: "/Coupons/Edit",
+                    type: "POST",
+                    data: $("form").serialize()
+                }).done(data => {
+                    if (data.IsSuccess) {
+                        $(".alert-danger").text("");
+                        $(".alert-danger>ul").addClass("d-none");
+                        alert("提交成功！");
+                        window.location.href = "/Coupons/Index";
+                    }
+                    else if (data.ErrorMessage == undefined) {
+                        alert("必填欄位有缺，請完成後再試一次")
+                        $(".alert-danger").removeClass("d-none");
+                        $(".alert-danger>ul").text("");
+
+                        for (let i = 0; i < data.length; i++) {
+                            $(".alert-danger>ul").append("<li>" + data[i].ErrorMessage + "</li>")
+                        }
+                    }
+                    else {
+                        $(".alert-danger").text("");
+                        $(".alert-danger>ul").addClass("d-none");
+                        alert(data.ErrorMessage);
+                    }
+                }).fail(err => {
+                    console.log(err.statusText);
+                });
+            })
+        })
+    </script>
+}

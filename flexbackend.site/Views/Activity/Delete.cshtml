@@ -1,0 +1,128 @@
+﻿@model Flex_Activity.dll.Models.ViewModels.ActivityDetailVM
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>是否確定刪除此筆資料</h2>
+
+@*<h3>Are you sure you want to delete this?</h3>*@
+<div>
+    @*<h4>ActivityDetailVM</h4>*@
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ActivityId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ActivityId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ActivityName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ActivityName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ActivityCategoryName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ActivityCategoryName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ActivityDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ActivityDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SpeakerName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SpeakerName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ActivityPlace)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ActivityPlace)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ActivityBookStartTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ActivityBookStartTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ActivityBookEndTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ActivityBookEndTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ActivityImage)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ActivityImage)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ActivityAge)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ActivityAge)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ActivitySalePrice)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ActivitySalePrice)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ActivityOriginalPrice)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ActivityOriginalPrice)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ActivityDescription)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ActivityDescription)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("回到活動列表", "Index")
+        </div>
+    }
+</div>

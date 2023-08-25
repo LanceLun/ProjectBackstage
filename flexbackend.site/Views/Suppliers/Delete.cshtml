@@ -1,0 +1,89 @@
+﻿@model Customized_Shoes.dll.Models.ViewModels.SupplierEditVM
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>刪除供應商資料</h2>
+
+<h3>請確認後再行刪除</h3>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.SupplierCompanyName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SupplierCompanyName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.HasCertificate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.HasCertificate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Supply_Material)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Supply_Material)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SupplierCompanyPhone)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SupplierCompanyPhone)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SupplierCompanyEmail)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SupplierCompanyEmail)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SupplierCompanyAddress)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SupplierCompanyAddress)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SupplierCompanyNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SupplierCompanyNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SupplierStartDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SupplierStartDate)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="刪除" class="btn btn-danger" /> |
+            <div class="btn btn-dark">
+                @Html.ActionLink("回到供應商目錄", "Index")
+            </div>
+        </div>
+    }
+</div>

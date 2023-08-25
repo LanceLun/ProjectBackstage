@@ -1,0 +1,81 @@
+﻿@model Flex_Activity.dll.Models.ViewModels.SpeakerCreateVM
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>新增講師</h2>
+
+
+@using (Html.BeginForm("Create", "Speaker", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+<div class="row">
+    @*<h4>SpeakerCreateVM</h4>*@
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @*<div class="mb-3">
+            @Html.LabelFor(model => model.SpeakerId, htmlAttributes: new { @class = "form-label" })
+            @Html.EditorFor(model => model.SpeakerId, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.SpeakerId, "", new { @class = "text-danger" })
+        </div>*@
+
+    <div class="mb-3">
+        @Html.LabelFor(model => model.SpeakerName, htmlAttributes: new { @class = "form-label" })
+        @Html.EditorFor(model => model.SpeakerName, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.SpeakerName, "", new { @class = "text-danger" })
+    </div>
+
+    @*<div class="mb-3">
+        <label for="SpeakerName" class="form-label">Speaker Name</label>
+        <input type="text" id="SpeakerName" name="SpeakerName" class="form-control" />
+        <span class="text-danger"></span>
+    </div>*@
+
+
+    <div class="mb-3">
+        @Html.LabelFor(model => model.SpeakerPhone, htmlAttributes: new { @class = "form-label" })
+        @Html.EditorFor(model => model.SpeakerPhone, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.SpeakerPhone, "", new { @class = "text-danger" })
+    </div>
+
+
+    <div class="mb-3">
+        @Html.LabelFor(model => model.fk_SpeakerFieldId, htmlAttributes: new { @class = "form-label" })
+        @Html.DropDownListFor(model => model.fk_SpeakerFieldId, ViewBag.fk_SpeakerFieldId as SelectList, new { @class = "form-select" })
+        @Html.ValidationMessageFor(model => model.fk_SpeakerFieldId, "", new { @class = "text-danger" })
+    </div>
+
+
+    <div class="mb-3">
+        @Html.LabelFor(model => model.SpeakerImg, htmlAttributes: new { @class = "form-label" })
+        <input type="file" name="fileTeacher" class=" form-control" />
+        @Html.ValidationMessageFor(model => model.SpeakerImg, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="mb-3">
+        @Html.LabelFor(model => model.fk_SpeakerBranchId, htmlAttributes: new { @class = "form-label" })
+        @Html.DropDownListFor(model => model.fk_SpeakerBranchId, ViewBag.fk_SpeakerBranchId as SelectList, new { @class = "form-select" })
+        @Html.ValidationMessageFor(model => model.fk_SpeakerBranchId, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="mb-3">
+        @Html.LabelFor(model => model.SpeakerDescription, htmlAttributes: new { @class = "form-label" })
+        @Html.EditorFor(model => model.SpeakerDescription, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.SpeakerDescription, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="mb-3">
+        <input type="submit" value="Create" class="btn btn-primary" />
+    </div>
+</div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

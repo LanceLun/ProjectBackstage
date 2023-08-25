@@ -1,0 +1,98 @@
+﻿@model Flex_Activity.dll.Models.ViewModels.DapperVM.OneToOneReservationDetailDapperVM
+
+@{
+    ViewBag.Title = "Detail";
+}
+
+<h2>Detail</h2>
+
+<div>
+    <h4>OneToOneReservationDetailDapperVM</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.MemberId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MemberId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Mobile)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Mobile)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ReservationStartTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ReservationStartTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ReservationEndTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ReservationEndTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BranchName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BranchName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ReservationCreatedDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ReservationCreatedDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ReservationStatusDescription)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ReservationStatusDescription)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.fk_ReservationSpeakerId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.fk_ReservationSpeakerId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.fk_ReservationStatusId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.fk_ReservationStatusId)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("編輯", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    @Html.ActionLink("回到活動列表", "Index")
+</p>

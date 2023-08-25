@@ -1,0 +1,38 @@
+﻿@model Customized_Shoes.dll.Models.ViewModels.Customized_materialsVM
+
+@{
+    ViewBag.Title = "修改材質分類";
+}
+
+<h2>修改材質分類</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Shoesmaterial_Id)
+
+        <div class="mb-3">
+            @Html.LabelFor(model => model.Material_Name, htmlAttributes: new { @class = "form-label" })
+
+                @Html.EditorFor(model => model.Material_Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Material_Name, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="mb-3">
+                <input type="submit" value="儲存修改" class="btn btn-primary" />
+        </div>
+    </div>
+}
+
+<div class="btn btn-dark">
+    @Html.ActionLink("回到材質列表", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

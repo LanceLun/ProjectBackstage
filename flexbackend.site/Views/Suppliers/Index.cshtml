@@ -1,0 +1,165 @@
+﻿@using Customized_Shoes.dll.Models.ViewModels
+@model IEnumerable<Customized_Shoes.dll.Models.ViewModels.SuppliersIndexVM>
+
+@{
+    ViewBag.Title = "Index";
+    var criteria = ViewBag.Criteria as SupplierCriteria;
+}
+
+@section Styles {
+
+    <link href="~/lib/datatables/css/jquery.dataTables.css" rel="stylesheet" />
+}
+
+<h2>材料供應商管理</h2>
+
+<p>
+
+</p>
+<div class="search-bar-container mb-4 d-flex">
+    <form method="get" class="me-auto w-100">
+        <div class="d-flex">
+            <div class="left d-flex me-auto">
+                @* 輸入框區域 寬度可移除下方class w-50 自行調整 *@
+                <div class="left">
+                    @*@Html.TextBoxFor(model => criteria.Name, new { @class = "form-control", placeholder = "搜尋..." })*@
+                    <input id="index_Search" class="form-control " name="criteria.CompanyName" type="text" value="@criteria.CompanyName" placeholder="搜尋公司名稱...">
+                    <input id="index_Search2" class="form-control " name="criteria.Supply_Material" type="text" value="@criteria.Supply_Material" placeholder="搜尋供應材料...">
+                </div>
+            </div>
+            <div class="right">
+                <button id="searchBtn" class="btn btn-primary">搜尋</button>
+                @Html.ActionLink("新增供應商", "Create", null, new { @class = "btn btn-primary" })
+            </div>
+        </div>
+    </form>
+</div>
+
+<table id="indexSupplier" class="table table-striped table-hover">
+    <thead>
+        <tr>
+            <th class="th-col-0 sticky">
+                <label class="form-check-label">
+                    <input class="form-check-input check-all" type="checkbox">
+                </label>
+            </th>
+            <th class="th-col-1">
+                @Html.DisplayNameFor(model => model.SupplierCompanyName)
+            </th>
+            <th class="th-col-1">
+                @Html.DisplayNameFor(model => model.HasCertificate)
+            </th>
+            <th class="th-col-1">
+                @Html.DisplayNameFor(model => model.Supply_Material)
+            </th>
+            <th class="th-col-1">
+                @Html.DisplayNameFor(model => model.SupplierCompanyPhone)
+            </th>
+            <th class="th-col-1">
+                @Html.DisplayNameFor(model => model.SupplierCompanyEmail)
+            </th>
+
+            <th class="th-col-1">
+                @Html.DisplayNameFor(model => model.SupplierCompanyAddressText)
+            </th>
+            <th class="th-col-1">
+                @Html.DisplayNameFor(model => model.SupplierCompanyNumber)
+            </th>
+            <th class="text-center">管理</th>
+        </tr>
+    </thead>
+    <tbody>
+        @* 如有照片要放
+            格式:
+            <td><div class="table-img-container"><img src="XXX.png" alt=""></div></td>
+        *@
+        @*  顯示資料內有定義了狀態框，
+            如有需展示狀態顏色，請在td內增加一個span，且定義class
+            有提供四種顏色:
+                綠色 : status-success
+                灰色 : status-dark
+                紅色 : status-danger
+                藍色 : status-primary
+            可依自己需求使用
+
+            格式: <td class="text-center"><span class="status-success}">進行中</span></td>
+        *@
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                @* 下方data-id後方欄位抓id，可方便勾選框抓資料 *@
+                <td class="sticky"><input class="form-check-input check-item" type="checkbox" data-id="@item.SupplierId"></td>           
+                <td>
+                    @Html.DisplayFor(modelItem => item.SupplierCompanyName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.HasCertificate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Supply_Material)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SupplierCompanyPhone)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SupplierCompanyEmail)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.SupplierCompanyAddressText)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SupplierCompanyNumber)
+                </td>
+                <td>
+                    <div class="manage-btn-container d-flex justify-content-center">
+                        <a href="@Url.Action("Edit", new {id=item.SupplierId })" class="btn-edit me-1"><i class="bi bi-pencil-square"></i></a>
+                        <a href="@Url.Action("Details", new {id=item.SupplierId })" class="btn-view me-1"><i class="bi bi-clipboard-check"></i></a>
+                        <a href="@Url.Action("Delete", new {id=item.SupplierId })" class="btn-del"><i class="bi bi-trash-fill"></i></a>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@section Scripts{
+    <script src="~/lib/datatables/js/jquery.dataTables.min.js"></script>
+    <script>
+
+        $(document).ready(function () {
+
+            $('#indexSupplier').DataTable(
+                {
+                    "searching": false,
+                    "paging": true, // 如果要顯示分頁器，設為 true
+                    "pageLength": 5, // 設定預設每頁顯示筆數
+                    "lengthMenu": [5, 10, 15, 20, "All"],
+                    oLanguage: {    // 中文化
+                        "sLengthMenu": "每頁顯示 _MENU_筆",
+                        "sZeroRecords": "沒有找到符合條件的資料",
+                        "sProcessing": "載入中...",
+                        "sInfo": "當前第 _START_ - _END_ 筆　共計 _TOTAL_ 筆",
+                        "sInfoEmpty": "沒有記錄",
+                        "sInfoFiltered": "(從 _MAX_ 條記錄中過濾)",
+                        "sSearch": "搜尋：",
+                        "oPaginate":
+                        {
+                            "sFirst": "首頁",
+                            "sPrevious": "前一頁",
+                            "sNext": "後一頁",
+                            "sLast": "尾頁"
+                        }
+                    },
+                    "columnDefs": [{
+                        "orderable": false,
+                        "targets": [0, 8]
+                    }],
+                    "order": [[1, 'asc']]
+                }
+            );
+        });
+     
+    </script>
+
+}

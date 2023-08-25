@@ -1,0 +1,265 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Flex Sports後台管理系統</title>
+    <link rel="icon" type="image/x-icon" href="~/Image/flexlogo.ico"/>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Styles.Render("~/Content/bootstrap-icons-1.10.5/font/bootstrap-icons.css")
+    @Styles.Render("~/Content/jquery-ui.min.css")
+    @Styles.Render("~/Content/variables.css")
+    @Styles.Render("~/Content/IndexPageStyle.css")
+    @Styles.Render("~/Content/table.css")
+    @RenderSection("styles", required: false)
+    @{
+        var userName = User.Identity.Name;
+        var db = new EFModels.EFModels.AppDbContext();
+        var user = db.Staffs.FirstOrDefault(s => s.Account == userName);
+
+        string fullName = user.Name;
+    }
+
+</head>
+<body>
+    <div id="bg"></div>
+    <!-- 菜單背景 -->
+    <div id="sidebar-bg" class=""></div>
+    <!-- 菜單 -->
+    <aside id="sidebar" class="left-hidden">
+        <div class="sidebar-top position-relative">
+            <div class="close-btn d-flex d-md-none ">
+                <i class="bi bi-x "></i>
+            </div>
+            <!-- 標題 -->
+
+            <div class="d-block mt-title">
+                <div class="d-none d-md-flex logo-countainer align-items-end justify-content-start"><span id="logo-container1"><img class="w-100" src="~/Public/Img/FlexLogo.png" /></span><span class="fs-5">後台管理系統</span></div>
+                <h2 class="hello d-block d-md-none">
+                    <span class="name">@fullName</span><span>, 您好</span>
+                </h2>
+            </div>
+        </div>
+
+        <!-- 列表 -->
+        <ul class="p-0 gray-sm-scroll sidebar-main">
+            <li>
+                <a href="@Url.Action("Index", "Home", new { area = "" })">
+                    <div><i class="bi bi-house-door-fill"></i><span>首頁</span></div>
+                </a>
+            </li>
+            @*<li>
+                <a href="@Url.Action("About", "Home", new { area = "" })">
+                    <div><i class="bi bi-chat-dots-fill"></i><span>訊息中心</span></div>
+                </a>
+            </li>*@
+
+            <li>
+                <a href="javascript:;" class="collapse-btn" id="product-btn" data-id="#product-item">
+                    <div><i class="bi bi-bag-fill"></i><span>商品及分類管理</span></div>
+                    <i class="bi bi-chevron-down"></i>
+                </a>
+                <ul class="collapse-item hide" id="product-item">
+                    <li>
+                        @Html.ActionLink("商品管理", "Index", "Products", new { area = "" }, new { @class = "nav-link" })
+                    </li>
+                    <li><a href='@Url.Action("ReportToExcel", "Products", new {area=""})'>匯出商品報表</a></li>
+                    <li>
+                        <a href="#">分類管理</a>
+                        <ul class="ms-5">
+                            <li><a href="@Url.Action("SalesCategoryIndex","ProductCategories", new { area = "" })">銷售分類</a></li>
+                            <li><a href='@Url.Action("ProductCategoryIndex", "ProductCategories", new {area=""})'>商品分類</a></li>
+                            <li><a href='@Url.Action("ProductSubCategoryIndex", "ProductCategories", new {area=""})'>商品子分類</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="@Url.Action("Index", "ProjectTag", new { area = "" })">專案標籤管理</a></li>
+                </ul>
+            </li>
+
+            <li>
+                <a href="javascript:;" class="collapse-btn" id="order-btn" data-id="#order-item">
+                    <div><i class="bi bi-clipboard-data-fill"></i><span>訂單管理</span></div>
+                    <i class="bi bi-chevron-down"></i>
+                </a>
+                <ul class="collapse-item hide" id="order-item">
+                    <li>@Html.ActionLink("訂單管理", "OrdersIndex", "Orders", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li>@Html.ActionLink("訂單相關管理", "Logistics_companiesIndex", "Logistics_companies", new { area = "" }, new { @class = "nav-link" })</li>
+                </ul>
+            </li>
+            <li>
+                <a href="javascript:;" class="collapse-btn" id="members-btn" data-id="#members-item">
+                    <div><i class="bi bi-people-fill"></i><span>會員管理</span></div>
+                    <i class="bi bi-chevron-down"></i>
+                </a>
+                <ul class="collapse-item hide" id="members-item">
+                    <li><a href="@Url.Action("Index", "Member", new { area = "" })">會員名單</a></li>
+                    @*<li><a href="@Url.Action("Index", "MembershipLevels", new { area = "" })">會員等級</a></li>*@
+                    @*<li><a href="@Url.Action("Index", "PointHistories", new { area = "" })">會員積分</a></li>*@
+                </ul>
+            </li>
+            <li>
+                <a href="javascript:;" class="collapse-btn" id="discount-btn" data-id="#discount-item">
+                    <div><i class="bi bi-wallet-fill"></i><span>促銷及優惠</span></div>
+                    <i class="bi bi-chevron-down"></i>
+                </a>
+                <ul class="collapse-item hide" id="discount-item">
+                    <li><a href="@Url.Action("Index", "DIscount", new { area = "" })">折扣活動</a></li>
+                    <li><a href="@Url.Action("Index", "Coupons", new { area = "" })">優惠券</a></li>
+                    @*<li><a href="javascript:;">優惠券報表</a></li>*@
+                </ul>
+            </li>
+            <li>
+                <a href="javascript:;" class="collapse-btn" id="activity-btn" data-id="#activity-item">
+                    <div><i class="bi bi-award-fill"></i><span>活動管理</span></div>
+                    <i class="bi bi-chevron-down"></i>
+                </a>
+                <ul class="collapse-item hide" id="activity-item">
+                    <li><a href="@Url.Action("Index", "Activity", new { area = "" })">活動管理</a></li>
+                    <li><a href="@Url.Action("Index", "Speaker", new { area = "" })">講師管理</a></li>
+                    <li><a href="@Url.Action("Index", "OneToOneReservation", new { area = "" })">一對一預約管理</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="javascript:;" class="collapse-btn" id="customized-btn" data-id="#customized-item">
+                    <div><i class="bi bi-boxes"></i><span>客製化管理</span></div>
+                    <i class="bi bi-chevron-down"></i>
+                </a>
+                <ul class="collapse-item hide" id="customized-item">
+                    <li><a href="@Url.Action("Index", "CustomizedShoesPoes", new { area = "" })">基底鞋款管理</a></li>
+                    <li><a href="@Url.Action("Index", "ShoesChoos", new { area = "" })">客製化選項管理</a></li>
+                    <li>
+                        <a href="#">各式分類管理</a>
+                        <ul class="ms-5">
+                            <li><a href="@Url.Action("Index","ShoesCategories", new { area = "" })">功能分類</a></li>
+                            <li><a href="@Url.Action("Index","ShoesColorCategories", new { area = "" })">顏色分類</a></li>
+                            <li><a href="@Url.Action("Index","Customized_materials", new { area = "" })">材質分類</a></li>
+                        </ul>
+                    </li>       
+                    <li><a href="@Url.Action("Index", "Suppliers", new { area = "" })">材料供應商管理</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="javascript:;" class="collapse-btn" id="employee-btn" data-id="#employee-item">
+                    <div><i class="bi bi-shop"></i><span>內部管理</span></div>
+                    <i class="bi bi-chevron-down"></i>
+                </a>
+                <ul class="collapse-item hide" id="employee-item">
+                    <li><a href="@Url.Action("StaffList", "Staffs", new { area = "" })">員工名單總覽</a></li>
+                    @*<li><a href="javascript:;">員工管理</a></li>
+                    <li><a href="javascript:;">員工權限管理</a></li>*@
+                </ul>
+            </li>
+        </ul>
+
+        <ul class="sidebar-bottom">
+            @{
+                if (User.Identity.IsAuthenticated)
+                {
+                    <li>
+                        <a href="@Url.Action("EditPassword", "Staffs", new { area = "" })">
+                            <div><i class="bi bi-gear-fill"></i><span>變更密碼</span></div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Logout", "Staffs", new { area = "" })">
+                            <div><i class="bi bi-door-open-fill"></i><span>登出</span></div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/Home/Index" class="nav-link">@(User.Identity.Name)</a>
+                    </li>
+                }
+                else
+                {
+                    <li>
+                        <a href="@Url.Action("CreateStaff", "Staffs", new { area = "" })">
+                            <div><i class="bi bi-gear-fill"></i><span>註冊員工帳號</span></div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Login", "Staffs", new { area = "" })">
+                            <div><i class="bi bi-door-open-fill"></i><span>登入</span></div>
+                        </a>
+                    </li>
+                }
+            }
+        </ul>
+    </aside>
+    <div class="container-right">
+        <header id="header">
+            <div class="header-left-wrapper">
+                <div id="sidebar-toggle" class="d-block d-md-none">
+                    <label class="fs-3">
+                        <i class="bi bi-list"></i>
+                        <input type="checkbox" class="d-none">
+                    </label>
+                </div>
+                <div class="hello d-none d-md-block">
+                    <span class="name">@fullName</span><span>,您好</span>
+                </div>
+                @*<a class="d-none d-md-inline" href="javascript:;">幫助<i class="bi bi-question-circle-fill"></i></a>*@
+            </div>
+
+            <!-- 標題 -->
+            <span id="logo-container2" class="d-md-none"><img class="w-100" src="~/Public/Img/FlexLogo.png" /></span>
+            <div class="header-right-wrapper">
+
+                <!-- 訊息框，需要用時取消d-none -->
+                <div id="notification-wrapper" class="d-none">
+
+                    <a href="javascript:;" class="bell">
+
+                        <!-- 未讀數字 -->
+                        <span id="unread-count">1</span>
+
+                        <i class="bi bi-bell"></i>
+                    </a>
+                    <div id="notification-box" class="d-none">
+                        <div>
+                            <!-- 看做內部訊息的功能的人想不想做已讀跟未讀 -->
+                            <a href="javascript:;" id="unread-button">未讀</a>
+                            <a href="javascript:;" id="read-button">已讀</a>
+                        </div>
+                        <div id="notification-area" class="gray-sm-scroll">
+                            <ul class="info-list">
+                                通知顯示在這裡
+
+                                <!-- 通知區每條樣板格式 請依照此格式製作 -->
+                                <li>
+                                    <div class="sender-name-area">
+                                        <div>
+                                            <span class="sender-name">@fullName</span><span>:</span>
+                                        </div>
+                                        <span class="message-update-time">21分鐘前</span>
+                                    </div>
+                                    <div class="message-content">
+                                        庫存已更新
+                                    </div>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <a href="javascript:;"><i class="bi bi-shop"></i><span class="ms-2 d-none d-md-inline">進入商店</span></a>
+            </div>
+        </header>
+        <!-- 此區放入主要內容區域 -->
+
+        <main id="main-area" class="gray-scroll p-3 position-relative">
+            <div class="container">
+                @RenderBody()
+            </div>
+        </main>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    <script src="~/Scripts/jquery-ui.min.js"></script>
+    <script src="~/Scripts/table.js"></script>
+    @RenderSection("scripts", required: false)
+    @Scripts.Render("~/Scripts/flexBE_main.js")
+</body>
+</html>

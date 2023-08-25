@@ -1,0 +1,35 @@
+﻿
+@{
+    ViewBag.Title = "CreateforExcel";
+}
+
+<h2>匯入商品</h2>
+<br>
+<br>
+@using (Html.BeginForm("CreateForExcel", "Products", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="row">
+        <div class="mb-3">
+            @*@Html.ValidationSummary()*@
+            <input type="file" name="createfile" id="createFile" class="form-control" accept=".xlsx, .xls" />
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <input type="button" value="下載範本" class="btn btn-primary me-2" onclick='downloadExcel()' />
+        <input id="save" type="submit" value="上傳" class="btn btn-primary me-2" />
+        <input type="button" value="取消" class="btn btn-primary" onclick='location.href="@Url.Action("Index")"' />
+    </div>
+}
+
+@section Scripts{
+    <script>
+        function downloadExcel() {
+            var url = '@Url.Content("~/Public/ExcelSimple/20230710Report.xlsx")';
+            window.location.href = url;
+        }
+        
+    </script>
+}

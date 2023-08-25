@@ -1,0 +1,87 @@
+﻿@model Flex_Activity.dll.Models.ViewModels.DapperVM.ReservationEditDapperVM
+
+@{
+    ViewBag.Title = "Edit";
+
+}
+
+@section Styles{
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <style>
+        .hide-field {
+            display: none;
+        }
+    </style>
+}
+<h2>編輯預約時間</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    @*<h4>ReservationEditDapperVM</h4>*@
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="mb-3">
+        @Html.LabelFor(model => model.ReservationStartTime, htmlAttributes: new { @class = "form-label" })
+
+        @Html.EditorFor(model => model.ReservationStartTime, new { htmlAttributes = new { @class = "form-control", @id = "ReservationStartTime" } })
+        @Html.ValidationMessageFor(model => model.ReservationStartTime, "", new { @class = "text-danger" })
+    </div>
+
+    @*<div class="mb-3">
+            @Html.LabelFor(model => model.ReservationEndTime, htmlAttributes: new { @class = "form-label hide-field" })
+
+            @Html.EditorFor(model => model.ReservationEndTime, new { htmlAttributes = new { @class = "form-control hide-field" , @id="ReservationEndTime"} })
+            @Html.ValidationMessageFor(model => model.ReservationEndTime, "", new { @class = "text-danger" })
+        </div>*@
+    <div class="mb-3">
+        @Html.LabelFor(model => model.fk_ReservationSpeakerId, htmlAttributes: new { @class = "form-label hide-field" })
+
+        @Html.EditorFor(model => model.fk_ReservationSpeakerId, new { htmlAttributes = new { @class = "form-control hide-field" } })
+        @Html.ValidationMessageFor(model => model.fk_ReservationSpeakerId, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="mb-3">
+        @Html.LabelFor(model => model.MemberId, htmlAttributes: new { @class = "form-label hide-field" })
+
+        @Html.EditorFor(model => model.MemberId, new { htmlAttributes = new { @class = "form-control hide-field" } })
+        @Html.ValidationMessageFor(model => model.MemberId, "", new { @class = "text-danger" })
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+    <div class="mb-3">
+        <input type="submit" value="Save" class="btn btn-primary" />
+    </div>
+</div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script>
+        $(document).ready(function () {
+            flatpickr("#ReservationStartTime", {
+                enableTime: true,
+                dateFormat: "Y-m-d H:i"
+                //time_24hr: true
+            });
+        })
+    </script>
+}

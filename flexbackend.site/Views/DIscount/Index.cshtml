@@ -1,0 +1,223 @@
+﻿@{
+    ViewBag.Title = "折扣管理";
+}
+@section Styles{
+    <link href="~/lib/datatables/css/jquery.datatables.min.css" rel="stylesheet" />
+}
+<h2>折扣管理</h2>
+
+<div class="search-bar-container mb-4 d-flex">
+    <div class="left w-75 d-flex justify-content-start me-auto">
+        <div class="w-25">
+            <div class="input-group d-flex">
+                <input class="form-control search-bar" type="text" placeholder="以折扣名稱搜尋...">
+            </div>
+        </div>
+        <div><a href="javascript:;" id="clear-input">清空</a></div>
+        <span>
+            <label class="form-check-label get-complete" for="get-complete-checkbox">
+                <input type="checkbox" class="form-check-input get-complete" id="get-complete-checkbox" />
+                搜尋已過期折扣
+            </label>
+        </span>
+    </div>
+
+    <div class="right">
+        <a href="@Url.Action("CreateOrEdit")" class="btn btn-primary">
+            <i class="bi bi-plus-lg"></i> 新增
+        </a>
+    </div>
+</div>
+<table class="w-100 d-table">
+    <thead>
+        <tr>
+            <th class="th-col-1">
+                折扣名稱
+            </th>
+            <th class="th-col-1">
+                折扣描述
+            </th>
+            <th class="th-col-1">
+                對應商品
+            </th>
+            <th class="th-col-1">
+                優惠條件
+            </th>
+            <th class="th-col-1">
+                折扣方式
+            </th>
+            <th class="th-col-1">
+                開始時間
+            </th>
+            <th class="th-col-1">
+                結束時間
+            </th>
+            <th class="th-col-1">
+                狀態
+            </th>
+            <th class="th-col-1">
+                優先度
+            </th>
+            <th class="text-center">管理</th>
+        </tr>
+    </thead>
+</table>
+@section Scripts{
+    <script src="~/lib/datatables/js/jquery.datatables.min.js"></script>
+    <script>
+        $(function () {
+
+
+            const searchBar = $(".search-bar");
+            const searchExpiredInput = $("#get-complete-checkbox");
+            getDatas();
+            function getDatas() {
+                $(".d-table").DataTable({
+                    ajax: {
+                        type: "POST",
+                        url: `/Discount/GetDatas`,
+                        data: {
+                            searchExpired: searchExpiredInput.prop("checked"),
+                            searchDiscountName: searchBar.val()
+                        },
+                        dataSrc: function (data) {
+                            return data;
+                        },
+                    },
+                    columns: [
+                        {
+                            data: "DiscountName"
+                        },
+                        {
+                            data: "DiscountDescription",
+                            orderable: false
+                        },
+                        {
+                            data: "ProjectTagNameToShow"
+                        },
+                        {
+                            data: "ConditionValueStr",
+                            orderable: false
+                        },
+                        {
+                            data: "DiscountValueStr",
+                            orderable: false
+                        },
+                        {
+                            data: "StartDateStr",
+                            "width": "15%"
+                        },
+                        {
+                            data: "EndDateStr",
+                            "width": "15%"
+                        },
+                        {
+                            data: null,
+                            render: function (data) {
+                                return `<div class="text-center ${data.Status == "進行中" ? "status-success" : (data.Status == "已過期" ? "status-dark" : "status-primary")}" >
+                                                ${data.Status}</div >`;
+                            }
+                        },
+                        {
+                            data: null,
+                            render: function (data) {
+                                return `<div class="text-end">${data.OrderByStr}</div>`;
+                            }
+                        },
+                        {
+                            data: null,
+                            render: function (data) {
+                                if (data.Status == "已過期") {
+                                    return `<div class="manage-btn-container d-flex justify-content-around">
+                                                    <a href="#" class="btn-del" data-id="${data.DiscountId}" data-name="${data.DiscountName}"><i class="bi bi-trash-fill"></i></a>
+                                                </div>`;
+                                }
+                                return `<div class="manage-btn-container d-flex">
+                                            <a href="#" class="btn-edit me-1" data-id="${data.DiscountId}"><i class="bi bi-pencil-square"></i></a>
+                                            <a href="#" class="btn-del" data-id="${data.DiscountId}" data-name="${data.DiscountName}"><i class="bi bi-trash-fill"></i></a>
+                                        </div>`;
+                            },
+                            orderable: false
+                        }
+                    ]
+                    ,
+                    order: [
+                        [7, "desc"],
+                        [8, "asc"]
+
+                    ],
+                    language: {
+                        paginate: {
+                            previous: '<i class="bi bi-chevron-left"></i>',
+                            next: '<i class="bi bi-chevron-right"></i>'
+                        },
+                        info: "第 _START_ 到 _END_ 筆，總共 _TOTAL_ 筆",
+                    },
+                    dom: '1Brtip',
+                    columnDefs: [
+                        { targets: [3, 4], className: 'text-right align-right' }
+                    ]
+                });
+            }
+            $(document).on("click", ".btn-edit", function () {
+                editDiscount($(this).data("id"));
+            });
+            function editDiscount(discountId) {
+                $.ajax({
+                    url: '/Discount/CreateOrEdit?id=' + discountId,
+                    type: 'GET',
+                    success: function (response) {
+                        window.location.href = '/Discount/CreateOrEdit?id=' + discountId;
+                    },
+                    error: function (xhr, status, error) {
+                    }
+                });
+            }
+
+            $(document).on("click", ".btn-del", function () {
+                showDeleteConfirmation($(this).data("id"), $(this).data("name"));
+            });
+
+            function showDeleteConfirmation(discountId, name) {
+                var confirmed = confirm(`是否確定刪除，優惠 ${name} ?`);
+                if (confirmed) {
+                    deleteDiscount(discountId);
+                }
+            }
+
+            function deleteDiscount(discountId) {
+                $.ajax({
+                    url: '/Discount/Delete/' + discountId,
+                    type: 'DELETE',
+                    success: function (response) {
+                        alert("刪除資料成功.");
+                        $(".d-table").DataTable().destroy();
+                        getDatas();
+                    },
+                    error: function (xhr, status, error) {
+                        console.log(xhr.responseText);
+                        alert("Failed to delete resource.");
+                    }
+                });
+            }
+
+            $("#get-complete-checkbox").click(function () {
+                $(".d-table").DataTable().destroy();
+                getDatas();
+            });
+
+            $("#clear-input").click(function () {
+                searchBar.val("");
+                $(".d-table").DataTable().destroy();
+                getDatas();
+
+            });
+
+            searchBar.change(function () {
+                $(".d-table").DataTable().destroy();
+                getDatas();
+            });
+        })
+       
+    </script>
+}

@@ -1,0 +1,152 @@
+﻿@model Discount.dll.Models.ViewModels.DiscountCreateOrEditVM
+
+@{
+    ViewBag.Title = "折扣管理";
+    SelectList projectTagitems = ViewBag.projectTagitems as SelectList;
+    SelectList discountType = ViewBag.DiscountType as SelectList;
+    SelectList conditionType = ViewBag.ConditionType as SelectList;
+}
+
+<div class="d-flex justify-content-between align-items-end">
+    <h2>折扣管理</h2>
+    <div>
+        @Html.ActionLink("回折扣首頁", "Index", null, new { @class = "fs-5" })
+    </div>
+</div>
+
+
+@using (Html.BeginForm("CreateOrEdit", "Discount", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div>
+        <hr />
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.DiscountId)
+        <div class="border border-2 border-dark p-0">
+            <div class="text-bg-dark py-2 px-4 fs-5">基本設定</div>
+            <div class="row row-cols-2 p-4">
+                <div class="mb-3">
+                    @Html.LabelFor(model => model.DiscountName, htmlAttributes: new { @class = "form-label" })
+                    @Html.EditorFor(model => model.DiscountName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.DiscountName, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="mb-3">
+                    @Html.LabelFor(model => model.DiscountDescription, htmlAttributes: new { @class = "form-label" })
+                    @Html.EditorFor(model => model.DiscountDescription, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.DiscountDescription, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="mb-3">
+                    @Html.LabelFor(model => model.ProjectTagId, htmlAttributes: new { @class = "form-label" })
+                    @Html.DropDownList("ProjectTagId", projectTagitems, "全部商品", new { @class = "form-select" })
+                    @Html.ValidationMessageFor(model => model.ProjectTagId, "", new { @class = "text-danger" })
+                </div>
+                <div class="mb-3">
+                    @Html.LabelFor(model => model.OrderBy, htmlAttributes: new { @class = "form-label" })
+                    @Html.EditorFor(model => model.OrderBy, new { htmlAttributes = new { @class = "form-control", type = "number", min = 0 } })
+                    @Html.ValidationMessageFor(model => model.OrderBy, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+
+        <div class="border border-2 border-dark p-0">
+            <div class="text-bg-dark py-2 px-4 fs-5">折扣條件設定</div>
+            <div class="row row-cols-2 p-4">
+                <div class="mb-3">
+                    @Html.LabelFor(model => model.ConditionType, htmlAttributes: new { @class = "form-label" })
+                    @Html.DropDownListFor(model => model.ConditionType, conditionType, new { @class = "form-select" })
+                    @Html.ValidationMessageFor(model => model.ConditionType, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="mb-3">
+                    @Html.LabelFor(model => model.ConditionValue, htmlAttributes: new { @class = "form-label" })
+                    @Html.EditorFor(model => model.ConditionValue, new { htmlAttributes = new { @class = "form-control", type = "number", min = 0 } })
+                    @Html.ValidationMessageFor(model => model.ConditionValue, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="border border-2 border-dark p-0">
+            <div class="text-bg-dark py-2 px-4 fs-5">優惠設定</div>
+            <div class="row row-cols-2 p-4">
+                <div class="mb-3">
+                    @Html.LabelFor(model => model.DiscountType, htmlAttributes: new { @class = "form-label" })
+                    @Html.DropDownListFor(model => model.DiscountType, discountType, new { @class = "form-select" })
+                    @Html.ValidationMessageFor(model => model.DiscountType, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="mb-3">
+                    @Html.LabelFor(model => model.DiscountValue, htmlAttributes: new { @class = "form-label" })
+                    @Html.EditorFor(model => model.DiscountValue, new { htmlAttributes = new { @class = "form-control", type = "number", min = 0 } })
+                    @Html.ValidationMessageFor(model => model.DiscountValue, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="border border-2 border-dark p-0">
+            <div class="text-bg-dark py-2 px-4 fs-5">時間設定</div>
+            <div class="row row-cols-2 p-4">
+                <div class="mb-3">
+                    @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "form-label" })
+                    <input type="text" class="form-control" name="startDate" id="startDate" value="@(Model.StartDate.ToString("yyyy'/'MM'/'dd"))">
+                    @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="mb-3">
+                    @Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "form-label" })
+                    <input type="text" class="form-control" name="endDate" id="endDate" value="@(Model.EndDate.HasValue?Model.EndDate.Value.ToString("yyyy'/'MM'/'dd"):"")">
+                    @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <div class="my-3">
+            <input type="submit" value="儲存" class="btn btn-primary" />
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(function () {
+            $("#endDate").datepicker({ dateFormat: 'yy/mm/dd' });
+            $("#startDate").datepicker({ dateFormat: 'yy/mm/dd' });
+
+            var form = $("form");
+
+            form.on("submit", handleSubmit);
+
+            function handleSubmit(event) {
+                event.preventDefault();
+                var formData = $(this).serialize();
+
+                $.ajax({
+                    url: "/Discount/CreateOrEdit",
+                    type: "POST",
+                    data: formData
+                }).done(data => {
+                    if (data.IsSuccess) {
+                        alert("提交成功！");
+                        window.location.href = "/Discount/Index";
+                    }
+                    else if (data.ErrorMessage == undefined) {
+                        return;
+                    }
+                    else {
+                        alert(data.ErrorMessage);
+                    }
+                }).fail(err => {
+                    console.log(err.statusText);
+                });
+            }
+        })
+    </script>
+}

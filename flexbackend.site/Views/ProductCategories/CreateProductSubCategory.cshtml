@@ -1,0 +1,68 @@
+﻿@model Flex.Products.dll.Models.ViewModel.ProductSubCategoryCreateVM
+
+@{
+    ViewBag.Title = "CreateProductSubCategory";
+}
+
+<h2>新增商品子分類</h2>
+
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="row">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="mb-3 d-none">
+            @Html.LabelFor(model => model.ProductSubCategoryId, htmlAttributes: new { @class = "form-label" })
+                @Html.EditorFor(model => model.ProductSubCategoryId, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ProductSubCategoryId, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="mb-3">
+            @Html.LabelFor(model => model.fk_ProductCategoryId, htmlAttributes: new { @class = "form-label" })
+                @Html.DropDownListFor(model => model.fk_ProductCategoryId,ViewBag.ProductCategory as SelectList, new { @class = "form-select",id= "fk_ProductCategoryId" })
+                @Html.ValidationMessageFor(model => model.fk_ProductCategoryId, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="mb-3">
+            @Html.LabelFor(model => model.ProductSubCategoryName, htmlAttributes: new { @class = "form-label" })
+                @Html.EditorFor(model => model.ProductSubCategoryName, new { htmlAttributes = new { @class = "form-control" ,id= "ProductSubCategoryName" } })
+                @Html.ValidationMessageFor(model => model.ProductSubCategoryName, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="mb-3">
+            @Html.LabelFor(model => model.SubCategoryPath, htmlAttributes: new { @class = "form-label" })
+                @Html.EditorFor(model => model.SubCategoryPath, new { htmlAttributes = new { @class = "form-control bg-secondary", @readonly="readonly" ,id= "SubCategoryPath" } })
+                @Html.ValidationMessageFor(model => model.SubCategoryPath, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="mb-3">
+            <input type="submit" value="新增" class="btn btn-primary" />
+            <input type="button" value="返回" class="btn btn-primary" onclick='location.href="@Url.Action("ProductSubCategoryIndex")"'/>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var productCategorySelect = document.querySelector("#fk_ProductCategoryId");
+            var productSubCategoryName = document.querySelector("#ProductSubCategoryName");
+            var subCategoryPath = document.querySelector("#SubCategoryPath");
+
+            productSubCategoryName.addEventListener('input', updateSubCategoryPath);
+            productCategorySelect.addEventListener('change', updateSubCategoryPath);
+
+            function updateSubCategoryPath() {
+                let productCategory = productCategorySelect.options[productCategorySelect.selectedIndex].text;
+                let productSubCategory = productSubCategoryName.value;
+                subCategoryPath.value = productCategory + "/" + productSubCategory;
+            }
+
+            updateSubCategoryPath();
+        })
+    </script>
+    @Scripts.Render("~/bundles/jqueryval")
+}

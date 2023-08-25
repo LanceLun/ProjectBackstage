@@ -1,0 +1,435 @@
+* {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+a:link {
+    text-decoration: none;
+}
+
+.status-primary,
+.status-danger,
+.status-success,
+.status-dark {
+    display: inline-block;
+    font-weight: bold;
+    border-radius: 15px;
+    padding: 2px 5px;
+}
+
+.status-success {
+    background-color: var(--status-success-bg-color);
+    color: var(--status-success-text-color);
+}
+
+    .status-success:hover {
+        background-color: var(--status-success-hover-bg-color);
+    }
+
+.status-primary {
+    background-color: var(--status-primary-bg-color);
+    color: var(--status-primary-text-color);
+}
+
+    .status-primary:hover {
+        background-color: var(--status-primary-hover-bg-color);
+    }
+
+.status-danger {
+    background-color: var(--status-danger-bg-color);
+    color: var(--status-danger-text-color);
+}
+
+    .status-danger:hover {
+        background-color: var(--status-danger-hover-bg-color);
+    }
+
+.status-dark {
+    background-color: var(--status-dark-bg-color);
+    color: var(--status-dark-text-color);
+}
+
+    .status-dark:hover {
+        background-color: var(--status-dark-hover-bg-color);
+    }
+
+.left,
+.right {
+    display: flex;
+    align-items: center;
+}
+
+.left {
+    justify-content: start;
+}
+
+.right {
+    justify-content: end;
+}
+
+.left > * {
+    margin-right: 20px;
+}
+
+.right > * {
+    margin-left: 20px;
+}
+
+input[type="checkbox"],
+.form-check-label {
+    cursor: pointer;
+}
+
+table {
+    font-size: var(--table-font-size);
+    color: var(--table-color);
+    position: relative;
+    white-space: nowrap;
+    overflow-x: auto;
+    width:100%;
+}
+    table .check-all,
+    table .check-item,
+    table .form-check-input.check-all,
+    table .form-check-input.check-item {
+        border-radius: 2px; /* 取消圓角 */
+        width: 18px;
+        height: 18px;
+    }
+    table tr.row-detail{
+        cursor:pointer;
+    }
+    table > thead {
+        width: 100%;
+    }
+
+    table thead th.sticky,
+    table tbody td.sticky {
+        position: sticky;
+        left: 0;
+    }
+
+
+    table th.th-col-0 {
+        width: 0%;
+    }
+
+    table th.th-col-1 {
+        width: 5%;
+    }
+
+    table th.th-col-2 {
+        width: 10%;
+    }
+
+    table th.th-col-3 {
+        width: 15%;
+    }
+
+    table th.th-col-4 {
+        width: 20%;
+    }
+
+    table th.th-col-5 {
+        width: 25%;
+    }
+
+    table th.th-col-6 {
+        width: 30%;
+    }
+
+    table th.th-col-7 {
+        width: 35%;
+    }
+
+    table th.th-col-8 {
+        width: 40%;
+    }
+
+    table th.th-col-9 {
+        width: 45%;
+    }
+
+    table th.th-col-10 {
+        width: 50%;
+    }
+
+    table th.th-col-11 {
+        width: 55%;
+    }
+
+    table th.th-col-12 {
+        width: 60%;
+    }
+
+    table th.th-col-13 {
+        width: 65%;
+    }
+
+    table th.th-col-14 {
+        width: 70%;
+    }
+
+    table th.th-col-15 {
+        width: 75%;
+    }
+
+    table th.th-col-16 {
+        width: 80%;
+    }
+
+    table th.th-col-17 {
+        width: 85%;
+    }
+
+    table th.th-col-18 {
+        width: 90%;
+    }
+
+    table th.th-col-19 {
+        width: 95%;
+    }
+
+    table th.th-col-20 {
+        width: 100%;
+    }
+
+
+    /* 表格樣式 */
+   table {
+        width: 100%;
+        border-collapse: collapse;
+        cursor: default;
+    }
+
+    table thead > tr {
+        height: var(--table-thead-height);
+    }
+
+    table tr {
+        border: #ddf;
+    }
+
+.align-right {
+    text-align: right;
+}
+   table > thead > tr,
+   table > tbody > tr {
+        height: 50px;
+    }
+   table > thead > tr > th,
+   table > tbody > tr > td{
+       height:100%;
+    }
+
+    table th,
+    table td {
+        padding: 5px 5px;
+    }
+    table.tbh-1 tr {
+        height: 40px;
+    }
+    table.tbh-1 th,
+    table.tbh-1 td {
+        /*padding: 0px 10px;*/
+    }
+
+    table.tbh-2 th,
+    table.tbh-2 td {
+        padding: 10px 10px;
+    }
+
+    table.tbh-3 th,
+    table.tbh-3 td {
+        padding: 15px 15px;
+    }
+
+    table th:first-child,
+    table td:first-child {
+        padding-left: 10px;
+    }
+
+    table th:last-child,
+    table td:last-child {
+        padding-right: 10px;
+    }
+
+table > thead > tr > th,
+table > thead > tr {
+    background-color: var(--table-thead-bg-color);
+    color: var(--table-thead-color);
+}
+
+    table thead th.sort-btn {
+        cursor: pointer;
+    }
+
+        table thead th.sort-btn:hover {
+            background-color: var(--table-sortbtn-hover-bg-color);
+        }
+
+table tr > * {
+    border-bottom: #F6F8FB 2px solid;
+    
+}
+table tbody tr > td {
+    vertical-align: middle;
+    background-color: var(--table-bg-color);
+}
+
+
+table tbody tr:hover > td {
+    background-color: var(--table-hover-bg-color);
+}
+
+
+    table tr > .sticky.shadow {
+        z-index: 400;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    /*table td {
+        height: 100%;
+    }*/
+
+    table .table-img-container {
+        width: 100%;
+        max-height: 90px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+    }
+
+    table .tbh-1 .table-img-container {
+        width: 70px;
+        max-height: 50px;
+    }
+
+    table .tbh-2 .table-img-container {
+        width: 90px;
+        max-height: 70px;
+    }
+
+    table .tbh-3 .table-img-container {
+        width: 110px;
+        max-height: 90px;
+    }
+
+    table .table-img-container > img {
+        width: 100%;
+        object-fit: contain;
+    }
+
+.manage-btn-group {
+    display: flex;
+}
+
+    .manage-btn-group > a {
+        font-size: 16px;
+        border-radius: var(--btn-border-radius);
+    }
+
+        .manage-btn-group > a:active {
+            background-color: #e1e1e1;
+        }
+
+table .btn-shop,
+table .btn-view,
+table .btn-edit,
+table .btn-del {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    width: var(--btn-width);
+    height: var(--btn-height);
+    border-radius: 5px;
+    transition: .15s;
+}
+
+table .btn-shop {
+    color: var(--btn-shop-color);
+    background: var(--btn-shop-bg-color);
+    border: var(--btn-border) solid var(--btn-shop-border-color);
+}
+
+    table .btn-shop:hover {
+        background-color: var(--btn-shop-hover-bg-color);
+        color: var(--btn-shop-hover-color);
+    }
+
+table .btn-view {
+    background: var(--btn-view-bg-color);
+    border: var(--btn-border) solid var(--btn-view-border-color);
+    color: var(--btn-view-color);
+}
+
+    table .btn-view:hover {
+        background-color: var(--btn-view-hover-bg-color);
+        color: var(--btn-view-hover-color);
+    }
+
+table .btn-edit {
+    border: var(--btn-border) solid var(--btn-edit-border-color);
+    color: var(--btn-edit-color);
+    background: var(--btn-edit-bg-color);
+}
+
+    table .btn-edit:hover {
+        background-color: var(--btn-edit-hover-bg-color);
+        color: var(--btn-edit-hover-color);
+    }
+
+table .btn-del {
+    background: var(--btn-del-bg-color);
+    border: var(--btn-border) solid var(--btn-del-border-color);
+    color: var(--btn-del-color);
+}
+
+    table .btn-del:hover {
+        background-color: var(--btn-del-hover-bg-color);
+        color: var(--btn-del-hover-color);
+    }
+
+table .btn-shop::before {
+    content: "檢視商品頁面";
+}
+
+table .btn-view::before {
+    content: "查看資訊";
+}
+
+table .btn-edit::before {
+    content: "編輯此筆";
+}
+
+table .btn-del::before {
+    content: "刪除此筆";
+}
+
+table .btn-shop::before,
+table .btn-view::before,
+table .btn-edit::before,
+table .btn-del::before {
+    font-size: 14px;
+    position: absolute;
+    white-space: nowrap;
+    top: -30px;
+    left: -25px;
+    padding: 3px 7px;
+    background-color: rgba(0, 0, 0, 0);
+    color: rgba(0, 0, 0, 0);
+    visibility: hidden;
+    border-radius: 5px;
+    transition: all .15s;
+}
+
+table .btn-shop:hover::before,
+table .btn-view:hover::before,
+table .btn-edit:hover::before,
+table .btn-del:hover::before {
+    visibility: visible;
+    background-color: #444;
+    color: #D1E7DD;
+}

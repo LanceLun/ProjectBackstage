@@ -1,0 +1,79 @@
+﻿@model Customized_Shoes.dll.Models.ViewModels.SupplierEditVM
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>廠商詳細資料</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.SupplierCompanyName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SupplierCompanyName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.HasCertificate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.HasCertificate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Supply_Material)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Supply_Material)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SupplierCompanyPhone)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SupplierCompanyPhone)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SupplierCompanyEmail)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SupplierCompanyEmail)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SupplierCompanyAddress)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SupplierCompanyAddress)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SupplierCompanyNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SupplierCompanyNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SupplierStartDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SupplierStartDate)
+        </dd>
+
+    </dl>
+</div>
+<p class="btn btn-dark">
+    @Html.ActionLink("回到供應商目錄", "Index")
+</p>

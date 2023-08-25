@@ -1,0 +1,509 @@
+@font-face {
+    font-family: 'Noto Sans TC';
+    src: url('../Fonts/NotoSansTC-Regular.otf') format('opentype ');
+    src: url('../Fonts/NotoSansTC-Medium.otf') format('opentype ');
+    src: url('../Fonts/NotoSansTC-Bold.otf') format('opentype');
+    src: url('../Fonts/NotoSansTC-Thin.otf') format('opentype');
+    src: url('../Fonts/NotoSansTC-Black.otf') format('opentype');
+    src: url('../Fonts/NotoSansTC-Light.otf') format('opentype');
+    /* 添加其他字體樣式（如字重）的 src 屬性 */
+}
+
+/* 清除預設樣式 */
+* {
+    font-family: 'Noto Sans TC', sans-serif;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+a:link {
+    font-family: 'Noto Sans TC', sans-serif;
+    text-decoration: none;
+}
+
+ul a:visited,
+ul a:focus,
+ul a:active {
+    font-family: 'Noto Sans TC', sans-serif;
+    color: inherit;
+    text-decoration: none;
+}
+
+body {
+    overflow: hidden;
+}
+
+#bg,
+#sidebar {
+    height: 100vh;
+    left: 0;
+    top: 0;
+}
+
+#bg,
+#sidebar-bg {
+    position: fixed;
+}
+
+/* 背景 */
+#bg {
+    width: 100vw;
+    background-color: var(--bg-color);
+    z-index: -9999;
+}
+
+/* 側邊欄 */
+#sidebar {
+    width: var(--sidebar-width);
+    background-color: var(--sidebar-bg-color);
+    position: fixed;
+    z-index: 800;
+    padding: 10px;
+}
+
+    #sidebar ul {
+        margin: 0;
+        padding: 0;
+    }
+
+    #sidebar,
+    #sidebar a:link {
+        color: var(--sidebar-text-color);
+    }
+
+        #sidebar .bi-x {
+            font-size: 2em;
+        }
+
+        #sidebar .sidebar-top {
+            height: var(--sidebar-top-hight);
+        }
+
+        /* LOGO/標題 */
+        #sidebar h2 {
+            text-align: center;
+        }
+
+#logo-container2,
+#logo-container1 {
+    display: block;
+    width: 80px;
+    height: 50px;
+    display: flex;
+    object-fit: cover;
+    justify-content: center;
+    align-items: start;
+    overflow: hidden;
+}
+
+#sidebar .sidebar-main {
+    height: calc(100vh - var(--sidebar-top-hight) - var(--sidebar-bottom-hight) - var(--sidebar-padding));
+    overflow-y: scroll;
+}
+
+/* 摺疊項 */
+#sidebar .collapse-item {
+    transition: 1.5s;
+    overflow: hidden;
+    max-height: 900px;
+    background-color: var(--collapse-item-bg-color);
+    padding: 0;
+}
+
+    /* 摺疊項摺疊時 */
+    #sidebar .collapse-item.hide {
+        transition: .4s;
+        max-height: 0;
+    }
+
+/* 手風琴箭頭轉向動畫時間 */
+.bi-chevron-down {
+    transition: .3s;
+}
+
+/* 手風琴箭頭轉向 */
+.rotate-180 {
+    transform: rotate(-180deg);
+}
+
+#sidebar ul span {
+    padding-left: 15px;
+}
+
+#sidebar .sidebar-main > li > a,
+#sidebar .collapse-item {
+    width: 98%;
+}
+
+    #sidebar .sidebar-main > li > a,
+    #sidebar .collapse-item,
+    #sidebar .collapse-item > li > a {
+        border-radius: var(--sidebar-btn-radius);
+    }
+
+#sidebar ul > li > a {
+    display: flex;
+    padding: 11px 20px;
+    justify-content: space-between;
+}
+
+    #sidebar ul > li > a:hover {
+        background-color: var(--sidebar-hover-bg-color);
+    }
+
+#sidebar .collapse-item > li > a {
+    padding: 10px 40px;
+}
+
+    #sidebar .collapse-item > li > a:hover {
+        background-color: var(--collapse-item-hover-bg-color);
+    }
+
+#sidebar .sidebar-bottom {
+    border-top: 1px var(--divider-color) solid;
+    height: var(--sidebar-bottom-hight);
+}
+
+    #sidebar .sidebar-bottom a {
+        border-radius: var(--sidebar-btn-radius);
+    }
+
+.container-right {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: calc(100% - var(--sidebar-width));
+}
+
+#header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: var(--header-height);
+    background-color: var(--header-bg-color);
+    border-bottom: 3px var(--divider-color) solid;
+    padding: 0 20px;
+    position: fixed;
+    width: calc(100% - var(--sidebar-width));
+}
+
+#sidebar-toggle label {
+    cursor: pointer;
+}
+
+#header a:link {
+    font-size: 18px;
+    transition: .3s;
+    color: #030303;
+    padding: 2px 8px;
+    border: 2px solid rgba(255, 255, 255, 0)
+}
+
+#megaphone-notification-box,
+#header .header-left-wrapper,
+#header .header-right-wrapper,
+#notification-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+    #header .header-left-wrapper .hello {
+        font-size: 20px;
+    }
+
+    #header .header-left-wrapper > * {
+        margin-left: 20px;
+    }
+
+        #header .header-left-wrapper > * i {
+            padding-left: 2px;
+        }
+
+    #header .header-right-wrapper > * {
+        margin-right: 20px;
+    }
+
+#header .header-left-wrapper,
+.header-right-wrapper,
+#notification-wrapper {
+    height: 100%;
+}
+
+#unread-count {
+    position: absolute;
+    left: 18px;
+    top: 15px;
+    font-size: 12px;
+    background-color: red;
+    border-radius: 50px;
+    color: #fff;
+    width: 18px;
+    text-align: center;
+}
+
+#header a:hover {
+    border-radius: 15px;
+    background-color: var(--header-link-hover-bg-color);
+}
+
+#header a i.active {
+    color: var(--icon-active-color);
+}
+
+#notification-wrapper {
+    position: relative;
+}
+
+#notification-box {
+    position: absolute;
+    top: calc(var(--header-height) - 20px);
+    right: 0;
+    width: 300px;
+    min-height: var(--notification-box-height);
+    background-color: var(--notification-box-bg-color);
+    box-shadow: 0 0 5px 0px rgba(0, 0, 0, .2);
+    border-radius: 10px;
+    box-sizing: border-box;
+    padding: 15px;
+}
+
+
+    #notification-box > div:first-child > a {
+        font-size: 16px;
+    }
+
+#notification-box {
+    font-size: 14px;
+}
+
+    #notification-box > div:first-child {
+        width: 100%;
+        border-bottom: 2px solid var(--divider-color);
+        padding-bottom: 5px;
+    }
+
+#notification-area {
+    width: 100%;
+    padding: 5px 0;
+    height: calc(var(--notification-box-height) - 60px);
+    max-height: calc(var(--notification-box-height) - 60px);
+    text-align: center;
+    overflow-y: auto;
+}
+
+    #notification-area .info-list {
+        padding: 0;
+    }
+
+        #notification-area .info-list li {
+            padding: 0;
+            text-align: left;
+        }
+
+        #notification-area .info-list li {
+            padding: 5px;
+            border-bottom: 1px solid var(--divider-color);
+            margin-bottom: 3px;
+        }
+
+            #notification-area .info-list li:hover {
+                background-color: var(--notification-box-hover-bg-color);
+            }
+
+        #notification-area .info-list .sender-name-area {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+            align-items: end;
+        }
+
+        #notification-area .info-list .message-update-time {
+            font-size: 12px;
+            color: #777;
+        }
+
+    /* 文字超過寬度折行 */
+    #notification-area .message-content {
+        max-width: 100%;
+        word-wrap: break-word;
+    }
+
+/* 主要內容區域 */
+#main-area {
+    height: calc(100vh - var(--header-height));
+    overflow-y: auto;
+    margin-top: var(--header-height);
+}
+
+.container > .w-95 {
+    width: 70%;
+}
+/* 自訂卷軸 */
+.gray-scroll::-webkit-scrollbar {
+    width: 8px;
+}
+
+.gray-sm-scroll::-webkit-scrollbar {
+    /* 設置卷軸寬度 */
+    width: 5px;
+}
+
+.gray-scroll::-webkit-scrollbar-track,
+.gray-sm-scroll:-webkit-scrollbar-track {
+    /* 設置卷軸軌道的背景色 */
+    background-color: #f1f1f1;
+}
+
+.gray-scroll::-webkit-scrollbar-thumb,
+.gray-sm-scroll::-webkit-scrollbar-thumb {
+    /* 設置卷軸滑塊的背景色 */
+    background-color: #888;
+    /* 設置卷軸滑塊的圓角 */
+    border-radius: 4px;
+}
+
+    .gray-scroll::-webkit-scrollbar-thumb:hover,
+    .gray-sm-scroll::-webkit-scrollbar-thumb:hover {
+        /* 設置卷軸滑塊在hover時的背景色 */
+        background-color: #aaa;
+    }
+
+.status-switch {
+    position: relative;
+    display: inline-block;
+    width: 45px;
+    height: 24px;
+}
+
+    .status-switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    .status-switch .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        -webkit-transition: .4s;
+        transition: .4s;
+        border-radius: 34px;
+    }
+
+        .status-switch .slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 2px;
+            top: 2px;
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+input:checked + .slider {
+    background-color: var(--status-success-text-color);
+}
+
+    input:checked + .slider:before {
+        -webkit-transform: translateX(21px);
+        -ms-transform: translateX(21px);
+        transform: translateX(21px);
+    }
+
+/* 小畫面時行為 */
+@media(max-width:768px) {
+
+    #sidebar,
+    #sidebar .bi-x {
+        left: 0;
+        transition: 0.4s;
+    }
+
+        /* 定位隱藏sidebar */
+        #sidebar.left-hidden {
+            left: calc(var(--sidebar-width) * -1);
+        }
+
+    /* sidebar跟關閉按鈕 */
+    #sidebar-bg,
+    .close-btn {
+        visibility: hidden;
+        opacity: 0;
+        transition: all .3s;
+    }
+
+    /* 關閉按鈕 */
+    .close-btn {
+        position: absolute;
+        left: calc(var(--sidebar-width));
+        width: var(--close-btn-size);
+        height: var(--close-btn-size);
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        border: 2px solid #fff;
+        border-radius: 3px;
+        background-color: rgba(0, 0, 0, .3);
+    }
+
+        /* 關閉按鈕的icon */
+        .close-btn > i {
+            transform: scale(1.3);
+            color: #fff;
+        }
+
+    /* sidebar展開時背景 */
+    #sidebar-bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: 150;
+    }
+
+        #sidebar-bg.show {
+            visibility: visible;
+            background-color: var(--sidebar-shadow-color);
+            opacity: .7;
+        }
+
+    .close-btn.show {
+        visibility: visible;
+        opacity: 1;
+    }
+
+    .container-right {
+        width: 100%;
+    }
+
+    #header {
+        width: 100%;
+    }
+
+    #sidebar-toggle > label {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 35px;
+        height: 35px;
+        border-radius: 10px;
+        border: 1.5px solid rgba(0, 0, 0, 0);
+    }
+
+        #sidebar-toggle > label:hover {
+            color: #888;
+        }
+
+        #sidebar-toggle > label.active {
+            border: 1.5px solid #999;
+        }
+}

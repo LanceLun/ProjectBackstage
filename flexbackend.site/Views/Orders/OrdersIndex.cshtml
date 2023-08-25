@@ -1,0 +1,629 @@
+﻿@model IEnumerable<Orders.ViewModels.OrdersIndexVM>
+
+
+@{
+    ViewBag.Title = "OrdersIndex";
+
+}
+@section Styles{
+    <link href="~/lib/datatables/css/jquery.dataTables.css" rel="stylesheet" />
+    <style>
+        thead {
+            background-color: #0B284A;
+            color: white;
+        }
+        .closed .btn-edit {
+            display: none;
+        }
+        .unclosed .btn-edit {
+            display: block;
+        }
+        .status-start {
+            color: orange;
+        }
+
+        .status-pending {
+            color: blue;
+        }
+
+        .status-delivering {
+            color: mediumpurple;
+        }
+        .status-shipped {
+            color: brown;
+        }
+
+        .status-awaiting {
+            color: darkgoldenrod;
+        }
+
+        .status-completed {
+            color: forestgreen;
+        }
+        .status-cancelled {
+            color: dimgrey;
+        }
+
+        .status-returned {
+            color: red;
+        }
+
+    </style>
+}
+
+<h2>訂單管理</h2>
+
+<p>
+
+</p>
+<div class="search-bar-container mb-4 d-flex">
+    <div class="left w-50 me-auto">
+
+        <div class="input-group">
+            <input class="form-control search-bar" type="text" placeholder="搜尋會員編號" name="searchString">
+        </div>
+        <select class="form-select" name="statusFilter">
+            <option value="">請選擇</option>
+            @foreach (var status in ViewData["orderStatuses"] as Dictionary<int, string>)
+            {
+                <option value="@status.Key">@status.Value</option>
+            }s
+        </select>
+        <div class="input-group"> <button class="btn btn-primary" type="submit">搜尋</button></div>
+       
+    </div>
+
+    <div class="right">
+        <a href="@Url.Action("Create")" class="btn btn-primary text-light">
+            <i class="bi bi-plus-lg"></i> 新增
+        </a>
+    </div>
+</div>
+<div class="table-container">
+    <table id="indexorders" class="table table-striped table-hover">
+        <thead>
+            <tr>
+               
+                <th class="th-col-0 sticky">
+                    <label class="form-check-label">
+                        <input class="form-check-input check-all" type="checkbox">
+                    </label>
+                </th>
+
+                <th class="th-col-1">
+                    @Html.DisplayNameFor(model => model.fk_member_Id)
+                </th>
+                <th class="th-col-1">
+                    @Html.DisplayNameFor(model => model.total_price)
+                </th>
+                <th class="th-col-1">
+                    @Html.DisplayNameFor(model => model.total_quantity)
+                </th>
+                <th class="th-col-1 text-center">
+                    @Html.DisplayNameFor(model => model.ordertime)
+                </th>
+                <th class="th-col-1">
+                    @Html.DisplayNameFor(model => model.logistics_companys)
+                </th>
+
+                <th class="th-col-1">
+                    @Html.DisplayNameFor(model => model.order_status)
+                </th>
+
+                <th class="th-col-1">
+                    @Html.DisplayNameFor(model => model.pay_method)
+                </th>
+
+                <th class="th-col-1">
+                    @Html.DisplayNameFor(model => model.pay_status)
+                </th>
+                <th class="th-col-1">
+                    @Html.DisplayNameFor(model => model.coupon_name)
+                </th>
+                <th class="th-col-1">
+                    @Html.DisplayNameFor(model => model.coupon_discount)
+                </th>
+                <th class="th-col-1">
+                    @Html.DisplayNameFor(model => model.freight)
+                </th>
+
+                <th class="th-col-1">
+                    @Html.DisplayNameFor(model => model.order_description)
+                </th>
+                <th>管理</th>
+                <th class="th-col-1">
+                    @Html.DisplayNameFor(model => model.close)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    @* 下方data-id後方欄位抓id，可方便勾選框抓資料 *@
+                    <td class="sticky">
+                        <input class="form-check-input check-item" type="checkbox" data-id="@item.Id">
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.fk_member_Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.total_price)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.total_quantity)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ordertime)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.logistics_companys)
+                    </td>
+
+                    <td class="th-col-1">
+                        @if (item.order_status_Id == 1)
+                        {
+                            <span class="status-start">@Html.DisplayFor(modelItem => item.order_status)</span>
+                        }
+                        else if (item.order_status_Id == 2)
+                        {
+                            <span class="status-pending">@Html.DisplayFor(modelItem => item.order_status)</span>
+                        }
+                        else if (item.order_status_Id == 3)
+                        {
+                            <span class="status-shipped">@Html.DisplayFor(modelItem => item.order_status)</span>
+                        }
+                        else if (item.order_status_Id == 4)
+                        {
+                            <span class="status-delivering">@Html.DisplayFor(modelItem => item.order_status)</span>
+                        }
+                        else if (item.order_status_Id == 5)
+                        {
+                            <span class="status-awaiting">@Html.DisplayFor(modelItem => item.order_status)</span>
+                        }
+                        else if (item.order_status_Id == 6)
+                        {
+                            <span class="status-completed">@Html.DisplayFor(modelItem => item.order_status)</span>
+                        }
+                        else if (item.order_status_Id == 7)
+                        {
+                            <span class="status-cancelled">@Html.DisplayFor(modelItem => item.order_status)</span>
+                        }
+                        else if (item.order_status_Id == 8)
+                        {
+                            <span class="status-returned">@Html.DisplayFor(modelItem => item.order_status)</span>
+                        }
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.pay_method)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.pay_status)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.coupon_name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.coupon_discount)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.freight)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.order_description)
+                    </td>
+
+                    <td>
+                        <div class="manage-btn-container d-flex">
+
+                            @if (!item.close)
+                            {
+                                <a href="@Url.Action("Edit", new { id = item.Id })" class="btn-edit unclosed me-1"><i class="bi bi-pencil-square"></i></a>
+                            }
+                            else
+                            {
+                                <a href="@Url.Action("Edit", new { id = item.Id })" class="btn-edit closed" style="display: none;"><i class="bi bi-pencil-square"></i></a>
+                            }
+
+
+
+                            <a href="@Url.Action("OrderItemsIndex", new { id = item.Id })" class="btn-view"><i class="bi bi-clipboard-check"></i></a>
+                        </div>
+                    </td>
+                    <td>
+                        <input type="checkbox" id="checkbox" class="status-switch" data-order-id="@item.Id" @(item.close ? "checked" : "") />
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div class="left m-3">
+    <button class="btn btn-primary text-light" id="addOrder1Btn">
+        <i class="bi bi-plus-lg"></i> 備貨中
+    </button>
+    <button class="btn btn-primary text-light" id="addOrder2Btn">
+        <i class="bi bi-plus-lg"></i> 已出貨
+    </button>
+    <button class="btn btn-primary text-light" id="addOrder3Btn">
+        <i class="bi bi-plus-lg"></i> 運送中
+    </button>
+    <button class="btn btn-primary text-light" id="addOrder4Btn">
+        <i class="bi bi-plus-lg"></i> 待領貨
+    </button>
+    <button class="btn btn-primary text-light" id="addOrder5Btn">
+        <i class="bi bi-plus-lg"></i> 已完成
+    </button>
+    <button class="btn btn-primary text-light" id="addOrder6Btn">
+        <i class="bi bi-plus-lg"></i> 已取消
+    </button>
+    <button class="btn btn-primary text-light" id="addOrder7Btn">
+        <i class="bi bi-plus-lg"></i> 已退貨
+    </button>
+</div>
+
+@section Scripts{
+    <script src="~/lib/datatables/js/jquery.dataTables.min.js"></script>
+    <script>
+            // 在頁面載入完成時觸發請求
+
+       $(document).ready(function () {
+  var table = $('#indexorders').DataTable({
+    "searching": false,
+    "paging": true,
+    "pageLength": 5,
+    "lengthMenu": [5, 10, 15, 20, "All"],
+                    oLanguage: {    // 中文化
+                        "sLengthMenu": "每頁顯示 _MENU_筆",
+                        "sZeroRecords": "沒有找到符合條件的資料",
+                        "sProcessing": "載入中...",
+                        "sInfo": "當前第 _START_ - _END_ 筆　共計 _TOTAL_ 筆",
+                        "sInfoEmpty": "沒有記錄",
+                        "sInfoFiltered": "(從 _MAX_ 條記錄中過濾)",
+                        "sSearch": "搜尋：",
+                        "oPaginate":
+                        {
+                            "sFirst": "首頁",
+                            "sPrevious": "前一頁",
+                            "sNext": "後一頁",
+                            "sLast": "尾頁"
+                        }
+                    },
+                    "columnDefs": [{
+      "orderable": false,
+      "targets": [0, 7]
+    }],
+    "order": [[1, 'asc']],
+    "drawCallback": function () {
+      bindStatusSwitchEvent();
+    }
+  });
+                bindStatusSwitchEvent();
+
+
+
+
+        window.onload = function() {
+
+  document.querySelectorAll(".sort-btn").forEach(item => {
+    item.addEventListener("click", function() {
+
+      sortClickHandler(this);
+    });
+  });
+
+  function sortClickHandler(targetBtn, callback = null) {
+    truncateSortAttr(targetBtn);
+    resetSortBtns();
+
+    var sortValue = targetBtn.getAttribute('sort');
+    var newSortValue = (sortValue && sortValue == 'asc') ? 'desc' : 'asc';
+    setSort(targetBtn, newSortValue);
+
+    callback && callback();
+  }
+
+
+  function setSort(sortBtn, setSort) {
+    sortBtn.setAttribute('sort', setSort);
+    if (setSort == 'asc') {
+      sortBtn.innerHTML += '<i class="bi bi-arrow-up-short"></i>';
+    } else if (setSort == 'desc') {
+      sortBtn.innerHTML += '<i class="bi bi-arrow-down-short"></i>';
+    }
+  }
+
+
+  function resetSortBtns() {
+    var sortBtns = document.querySelectorAll(".sort-btn");
+    sortBtns.forEach(function(btn) {
+      if (btn.innerHTML.includes("</i>")) {
+        btn.innerHTML = btn.innerHTML.substring(0, btn.innerHTML.indexOf("<"));
+      }
+    });
+  }
+
+
+  function truncateSortAttr(thisBtn = null) {
+    var sortBtns = document.querySelectorAll(".sort-btn");
+    sortBtns.forEach(function(btn) {
+      if (btn !== thisBtn) {
+        btn.removeAttribute('sort');
+      }
+    });
+  }
+        };
+    document.addEventListener("DOMContentLoaded", function () {
+            var searchBtn = document.querySelector(".btn-primary");
+            searchBtn.addEventListener("click", function () {
+                var searchString = document.querySelector(".search-bar").value;
+                window.location.href = "@Url.Action("OrdersIndex")?searchString=" + searchString;
+            });
+    });
+
+           function bindStatusSwitchEvent() {
+    $('.status-switch').off('change'); // 解除之前的事件绑定
+               $('.status-switch').on('change', function () {
+                   var isChecked = $(this).prop('checked');
+                   var orderId = $(this).data('order-id');
+                   //var row = $(this).closest('tr');
+                   var editBtn = $(this).closest('tr').find('.btn-edit');
+
+                   $.ajax({
+                       url: '@Url.Action("ChangeStatus", "Orders")',
+                       type: 'POST',
+                       data: { orderId: orderId, isChecked: isChecked },
+                       success: function (result) {
+                            if (isChecked) {
+                editBtn.hide();
+            } else {
+                editBtn.show();
+            }
+                       }
+                       });
+
+    });
+  }
+});
+
+
+        document.addEventListener("DOMContentLoaded", function () {
+            var searchBtn = document.querySelector(".btn-primary");
+            searchBtn.addEventListener("click", function () {
+                var searchString = document.querySelector(".search-bar").value;
+                var statusFilter = document.querySelector("select[name='statusFilter']").value;
+
+                var url = "@Url.Action("OrdersIndex")";
+                url += "?searchString=" + searchString;
+                if (statusFilter) {
+                    url += "&statusFilter=" + statusFilter;
+                }
+
+                window.location.href = url;
+            });
+        });
+        $(document).ready(function () {
+        $('#addOrder1Btn').click(function () {
+            var checkboxes = $('.check-item:checked'); // 取得所有勾選的項目的 checkbox
+            var orderIds = checkboxes.map(function () {
+                return $(this).data('id'); // 取得勾選項目的 data-id 屬性值
+            }).get();
+
+            if (orderIds.length > 0) {
+                // 發送 AJAX 請求儲存資料
+                $.ajax({
+                    url: '@Url.Action("UpdateOrderStatus", "Orders")',
+                    type: 'POST',
+                    data: { orderIds: orderIds },
+                    success: function (result) {
+                        // 更新成功後進行處理
+                        if (result.success) {
+                            // 重新載入頁面或進行其他處理
+                            location.reload();
+                        } else {
+                            // 處理更新失敗的情況
+                            alert('更新失敗');
+                        }
+                    },
+                    error: function () {
+                        // 處理 AJAX 請求錯誤
+                        alert('發生錯誤');
+                    }
+                });
+            }
+        });
+        });
+     $(document).ready(function () {
+        $('#addOrder2Btn').click(function () {
+            var checkboxes = $('.check-item:checked'); // 取得所有勾選的項目的 checkbox
+            var orderIds = checkboxes.map(function () {
+                return $(this).data('id'); // 取得勾選項目的 data-id 屬性值
+            }).get();
+
+            if (orderIds.length > 0) {
+                // 發送 AJAX 請求儲存資料
+                $.ajax({
+                    url: '@Url.Action("UpdateOrderStatus1", "Orders")',
+                    type: 'POST',
+                    data: { orderIds: orderIds },
+                    success: function (result) {
+                        // 更新成功後進行處理
+                        if (result.success) {
+                            // 重新載入頁面或進行其他處理
+                            location.reload();
+                        } else {
+                            // 處理更新失敗的情況
+                            alert('更新失敗');
+                        }
+                    },
+                    error: function () {
+                        // 處理 AJAX 請求錯誤
+                        alert('發生錯誤');
+                    }
+                });
+            }
+        });
+     });
+     $(document).ready(function () {
+        $('#addOrder3Btn').click(function () {
+            var checkboxes = $('.check-item:checked'); // 取得所有勾選的項目的 checkbox
+            var orderIds = checkboxes.map(function () {
+                return $(this).data('id'); // 取得勾選項目的 data-id 屬性值
+            }).get();
+
+            if (orderIds.length > 0) {
+                // 發送 AJAX 請求儲存資料
+                $.ajax({
+                    url: '@Url.Action("UpdateOrderStatus2", "Orders")',
+                    type: 'POST',
+                    data: { orderIds: orderIds },
+                    success: function (result) {
+                        // 更新成功後進行處理
+                        if (result.success) {
+                            // 重新載入頁面或進行其他處理
+                            location.reload();
+                        } else {
+                            // 處理更新失敗的情況
+                            alert('更新失敗');
+                        }
+                    },
+                    error: function () {
+                        // 處理 AJAX 請求錯誤
+                        alert('發生錯誤');
+                    }
+                });
+            }
+        });
+     });
+     $(document).ready(function () {
+        $('#addOrder4Btn').click(function () {
+            var checkboxes = $('.check-item:checked'); // 取得所有勾選的項目的 checkbox
+            var orderIds = checkboxes.map(function () {
+                return $(this).data('id'); // 取得勾選項目的 data-id 屬性值
+            }).get();
+
+            if (orderIds.length > 0) {
+                // 發送 AJAX 請求儲存資料
+                $.ajax({
+                    url: '@Url.Action("UpdateOrderStatus3", "Orders")',
+                    type: 'POST',
+                    data: { orderIds: orderIds },
+                    success: function (result) {
+                        // 更新成功後進行處理
+                        if (result.success) {
+                            // 重新載入頁面或進行其他處理
+                            location.reload();
+                        } else {
+                            // 處理更新失敗的情況
+                            alert('更新失敗');
+                        }
+                    },
+                    error: function () {
+                        // 處理 AJAX 請求錯誤
+                        alert('發生錯誤');
+                    }
+                });
+            }
+        });
+     });
+     $(document).ready(function () {
+        $('#addOrder5Btn').click(function () {
+            var checkboxes = $('.check-item:checked'); // 取得所有勾選的項目的 checkbox
+            var orderIds = checkboxes.map(function () {
+                return $(this).data('id'); // 取得勾選項目的 data-id 屬性值
+            }).get();
+
+            if (orderIds.length > 0) {
+                // 發送 AJAX 請求儲存資料
+                $.ajax({
+                    url: '@Url.Action("UpdateOrderStatus4", "Orders")',
+                    type: 'POST',
+                    data: { orderIds: orderIds },
+                    success: function (result) {
+                        // 更新成功後進行處理
+                        if (result.success) {
+                            // 重新載入頁面或進行其他處理
+                            location.reload();
+                        } else {
+                            // 處理更新失敗的情況
+                            alert('更新失敗');
+                        }
+                    },
+                    error: function () {
+                        // 處理 AJAX 請求錯誤
+                        alert('發生錯誤');
+                    }
+                });
+            }
+        });
+     });
+     $(document).ready(function () {
+        $('#addOrder6Btn').click(function () {
+            var checkboxes = $('.check-item:checked'); // 取得所有勾選的項目的 checkbox
+            var orderIds = checkboxes.map(function () {
+                return $(this).data('id'); // 取得勾選項目的 data-id 屬性值
+            }).get();
+
+            if (orderIds.length > 0) {
+                // 發送 AJAX 請求儲存資料
+                $.ajax({
+                    url: '@Url.Action("UpdateOrderStatus5", "Orders")',
+                    type: 'POST',
+                    data: { orderIds: orderIds },
+                    success: function (result) {
+                        // 更新成功後進行處理
+                        if (result.success) {
+                            // 重新載入頁面或進行其他處理
+                            location.reload();
+                        } else {
+                            // 處理更新失敗的情況
+                            alert('更新失敗');
+                        }
+                    },
+                    error: function () {
+                        // 處理 AJAX 請求錯誤
+                        alert('發生錯誤');
+                    }
+                });
+            }
+        });
+     });
+     $(document).ready(function () {
+        $('#addOrder7Btn').click(function () {
+            var checkboxes = $('.check-item:checked'); // 取得所有勾選的項目的 checkbox
+            var orderIds = checkboxes.map(function () {
+                return $(this).data('id'); // 取得勾選項目的 data-id 屬性值
+            }).get();
+
+            if (orderIds.length > 0) {
+                // 發送 AJAX 請求儲存資料
+                $.ajax({
+                    url: '@Url.Action("UpdateOrderStatus6", "Orders")',
+                    type: 'POST',
+                    data: { orderIds: orderIds },
+                    success: function (result) {
+                        // 更新成功後進行處理
+                        if (result.success) {
+                            // 重新載入頁面或進行其他處理
+                            location.reload();
+                        } else {
+                            // 處理更新失敗的情況
+                            alert('更新失敗');
+                        }
+                    },
+                    error: function () {
+                        // 處理 AJAX 請求錯誤
+                        alert('發生錯誤');
+                    }
+                });
+            }
+        });
+    });
+    </script>
+}

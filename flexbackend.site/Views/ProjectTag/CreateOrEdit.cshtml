@@ -1,0 +1,480 @@
+﻿@using Discount.dll.Models.Services;
+@model Discount.dll.Models.ViewModels.ProjectTagEditNameVM
+
+@{
+    ViewBag.Title = "專案標籤管理";
+
+    var criteria = ViewBag.Criteria as ProjectTagService.Criteria;
+}
+@section Styles{
+    <link href="~/lib/datatables/css/jquery.datatables.min.css" rel="stylesheet" />
+    <style>
+        #drop-btn:hover {
+            background-color: rgba(150, 150, 150,.3);
+        }
+
+        #drop-menu {
+            z-index: 9000;
+            display: block;
+            background-color: #fff;
+            max-height: 0px;
+            transition: .2s;
+            overflow-y: scroll;
+        }
+
+            #drop-menu.active {
+                max-height: 200px;
+                border: 1px solid #777;
+            }
+
+                #drop-menu.active > li > a:hover {
+                    background-color: #ddd;
+                }
+
+        .pj-tag {
+            padding: 1px 4px 1px 5px;
+            background-color: #5C83E2;
+            color: #deefff;
+        }
+
+            .pj-tag.this-tag {
+                background-color: #589a69;
+                color: #bfffde;
+            }
+
+            .pt-table thead {
+                background-color: #0B284A;
+                color: white;
+            }
+
+            .pt-table tr {
+                border: #ddf;
+            }
+    </style>
+}
+
+<div class="d-flex justify-content-between align-items-end">
+    <h2>專案標籤管理</h2>
+    @Html.ActionLink("回專案標籤首頁", "Index", null, new { @class = "fs-5" })
+</div>
+
+
+
+<form id="formIndex" method="get" action="@Url.Action("CreateOrEdit", "ProjectTag")">
+    @Html.AntiForgeryToken()
+
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <div class="mt-4 mb-5 row">
+        @Html.LabelFor(model => model.ProjectTagName, htmlAttributes: new { @class = "form-label text-secondary small " })
+        <div class="col-6 col-sm-5 col-lg-3 d-flex align-items-center position-relative">
+            <input type="text" class="form-control d-create d-none" id="ProjectTagName" name="ProjectTagName" value="@Model.ProjectTagName" />
+            <button id="drop-btn" type="button" class="d-detail  bg-opacity-10 border-0 w-100 d-flex justify-content-between align-items-center py-1">
+                <span id="tag-name" class="fs-5 me-auto " data-id="@Model.ProjectTagId">@Model.ProjectTagName</span>
+                <i class="bi bi-caret-down-fill"></i>
+            </button>
+            <input type="hidden" id="ProjectTagId" name="ProjectTagId" value="@Model.ProjectTagId" />
+            <ul id="drop-menu" class="bg-white position-absolute top-100 w-100 fs-5 p-0 gray-sm-scroll"></ul>
+        </div>
+        <div class="col d-flex align-items-center">
+            <button type="button" id="edit" class="btn btn-sm btn-success me-2 d-detail d-none">編輯</button>
+            <button type="button" id="create" class="btn btn-sm btn-primary me-2 d-detail d-none">新增</button>
+            <button type="button" id="save" class="btn btn-sm btn-success me-2 d-create d-none">保存</button>
+            <button type="button" id="cancel" class="btn btn-sm btn-danger me-2 d-create d-none">取消</button>
+        </div>
+        @Html.ValidationMessageFor(model => model.ProjectTagName, "", new { @class = "text-danger" })
+    </div>
+    <div class="row mb-2 d-flex">
+        <div class="col-6 col-sm-5 col-lg-3 d-flex align-items-center">
+            <input type="text" class="form-control" id="Categoryinput" name="CategoryName" placeholder="分類搜尋..." value="@criteria.CategoryName" />
+        </div>
+        <div class="col-6 col-sm-5 col-lg-3 d-flex align-items-center">
+            <input type="text" class="form-control" id="Productinput" name="ProductName" placeholder="品名搜尋..." value="@criteria.ProductName" />
+        </div>
+    </div>
+    <div class="d-flex mb-3 align-items-center">
+        <label class="form-check-label me-3">
+            <input type="checkbox" class="form-check-input click-to-reflesh" id="excludeNonTaggedProducts" name="excludeNonTaggedProducts" checked="@(criteria.excludeNonTaggedProducts.HasValue ? criteria.excludeNonTaggedProducts.Value : false)" />
+            顯示非此標籤產品
+        </label>
+        <label class="form-check-label me-5">
+            <input type="checkbox" class="form-check-input click-to-reflesh" id="excludeOutOfStockProducts" name="excludeOutOfStockProducts" checked="@(criteria.excludeOutOfStockProducts.HasValue ? criteria.excludeOutOfStockProducts.Value : false)" />
+            顯示已下架產品
+        </label>
+        <button type="submit" class="btn btn-primary d-detail">搜尋</button>
+    </div>
+</form>
+
+<table id="DataTables_Table_0" class="pt-table w-100 table table-hover">
+    <thead>
+        <tr>
+            <th class="px-2">
+                <label class="form-check-label">
+                    <input class="form-check-input check-all" type="checkbox">
+                </label>
+            </th>
+            <th>
+                分類
+            </th>
+            <th>
+                產品名稱
+            </th>
+            <th class="text-center">
+                狀態
+            </th>
+            <th>
+                標籤
+            </th>
+            <th class="text-center">管理</th>
+        </tr>
+    </thead>
+</table>
+<div class="d-flex justify-content-end mt-4">
+    <button id="joinAll" class="btn btn-success click-to-reflesh me-2">一併加入</button>
+    <button id="removeAll" class="btn btn-secondary click-to-reflesh">一併移除</button>
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/lib/datatables/js/jquery.datatables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            const TagNameInput = $("#ProjectTagName");
+            const TagName = $("#tag-name");
+            const $dropMenu = $("#drop-menu");
+            const excludeNonTaggedProducts = $("#excludeNonTaggedProducts");
+            const excludeOutOfStockProducts = $("#excludeOutOfStockProducts");
+            let editmode = TagName.data("id") == 0
+            createModeToggle();
+
+            let dataTable;
+            getDatas();
+            function getDatas() {
+                let d1 = !excludeNonTaggedProducts.prop('checked');
+                let d2 = excludeOutOfStockProducts.prop('checked');
+                if (dataTable) {
+                    dataTable.ajax.reload(null, false);
+                } else {
+                    dataTable = $(".pt-table").DataTable({
+                        ajax: {
+                            url: "/ProjectTag/GetProducts",
+                            type: "POST",
+                            data: {
+                                projectTagId: TagName.data("id"),
+                                excludeNonTaggedProducts: d1,
+                                excludeOutOfStockProducts: d2,
+                                subCategoryPath: $("#Categoryinput").val(),
+                                productName: $("#Productinput").val()
+                            },
+                            dataSrc: function (data) {
+                                return data;
+                            },
+
+                        },
+                        columns: [
+                            {
+                                data: null,
+                                render: function (data) {
+                                    return `<input class="form-check-input check-item" type="checkbox" data-id="${data.ProductId}"></td>`;
+                                },
+                                orderable: false
+                            },
+                            {
+                                data: "SubCategoryPath"
+                            },
+                            {
+                                data: "ProductName",
+                            },
+                            {
+                                data: null,
+                                className: 'text-center',
+                                render: function (data) {
+                                    return `<span class="${data.Status ? "status-dark" : "status-success"}" >
+                                                            ${data.Status ? "已下架" : "上架中"}</span >`;
+                                }
+                            },
+                            {
+                                data: null,
+                                render: function (data) {
+                                    let str = "";
+                                    for (let i = 0; i < data.ProjectTags.length; i++) {
+                                        str +=
+                                            `<span class="me-1 pj-tag ${TagName.data("id") == data.ProjectTags[i].ProjectTagId
+                                                ? "this-tag" : ""}">
+                                                                        ${data.ProjectTags[i].ProjectTagName}
+                                                                        </span>`
+                                    }
+                                    return str;
+                                },
+                                "width": "50%",
+                                orderable: false
+                            },
+                            {
+                                data: null,
+                                className: 'text-center',
+                                render: function (data) {
+                                    let hasThisTag = data.ProjectTags.some(tag => tag.ProjectTagId === TagName.data("id"));
+                                    if (editmode) {
+                                        return "";
+                                    }
+                                    return hasThisTag ?
+                                        `<a href="javascript:;" data-pdid="${data.ProductId}" " class="text-primary btn-reflesh delete-tag">移除標籤</a>` :
+                                        `<a href="javascript:;" data-pdid="${data.ProductId}" " class="text-primary btn-reflesh insert-tag">加入標籤</a>`;
+                                },
+                                orderable: false,
+                                "width": "10%",
+                            }
+                        ],
+                        order: [
+                            [1, "desc"]
+                        ],
+                        language: {
+                            paginate: {
+                                previous: '<i class="bi bi-chevron-left"></i>',
+                                next: '<i class="bi bi-chevron-right"></i>'
+                            },
+                            info: "第 _START_ 到 _END_ 筆，總共 _TOTAL_ 筆",
+                        },
+                        dom: '1Brtip',
+                    });
+                }
+            }
+            excludeNonTaggedProducts.on('change', function () {
+                getDatas();
+            });
+
+            excludeOutOfStockProducts.on('change', function () {
+                getDatas();
+            });
+
+            $(document).on('click', '.btn-reflesh', function (event) {
+                event.preventDefault();
+
+                let pdid = $(this).data('pdid');
+                let pjId = TagName.data("id");
+
+
+                if ($(this).hasClass('delete-tag')) {
+                    deleteTag(pdid, pjId);
+                } else if ($(this).hasClass('insert-tag')) {
+                    insertTag(pdid, pjId);
+                }
+            });
+
+            $("#joinAll").on("click", function () {
+                let dataIds = $(".check-item:checked").map(function () {
+                    return $(this).data("id");
+                }).get();
+                let pjId = TagName.data("id");
+                let confirmed = confirm(`將更新${dataIds.length}筆資料，是否繼續?`);
+                insertTags(dataIds, pjId)
+                $(".check-all").prop("checked", false);
+            });
+
+            $("#removeAll").on("click", function () {
+                let dataIds = $(".check-item:checked").map(function () {
+                    return $(this).data("id");
+                }).get();
+                let pjId = TagName.data("id");
+                let confirmed = confirm(`將更新${dataIds.length}筆資料，是否繼續?`);
+                deleteTags(dataIds, pjId)
+                $(".check-all").prop("checked", false);
+            });
+
+            function deleteTags(pdIds, pjId) {
+                $.ajax({
+                    url: "/ProjectTag/DeleteTags",
+                    type: "POST",
+                    data: {
+                        pdIds: pdIds,
+                        pjId: pjId
+                    },
+                }).done(data => {
+                    getDatas();
+                }).fail(err => {
+                });
+            }
+            function insertTags(pdIds, pjId) {
+                $.ajax({
+                    url: "/ProjectTag/InsertTags",
+                    type: "POST",
+                    data: {
+                        pdIds: pdIds,
+                        pjId: pjId
+                    },
+                }).done(data => {
+                    getDatas();
+                }).fail(err => {
+                });
+            }
+
+            function deleteTag(pdId, pjId) {
+                $.ajax({
+                    url: "/ProjectTag/DeleteTag",
+                    type: "POST",
+                    data: {
+                        pdId: pdId,
+                        pjId: pjId
+                    },
+                }).done(data => {
+                    getDatas();
+                }).fail(err => {
+                });
+            }
+
+            function insertTag(pdId, pjId) {
+                $.ajax({
+                    url: "/ProjectTag/InsertTag",
+                    type: "POST",
+                    data: {
+                        pdId: pdId,
+                        pjId: pjId
+                    },
+                }).done(data => {
+                    getDatas();
+                }).fail(err => {
+                });
+            }
+
+            $("#create").on("click", function () {
+                TagName.data("id", 0);
+                TagNameInput.val("");
+                editmode = true;
+                createModeToggle();
+                getDatas();
+            });
+
+            $("#cancel").on("click", function () {
+                $.ajax({
+                    url: "/ProjectTag/GetEditData",
+                    type: "POST",
+                    data: {
+                        id: TagName.data("id")
+                    }
+                }).done(data => {
+                    $("#ProjectTagId").val(data.ProjectTagId);
+                    TagName.data("id", data.ProjectTagId);
+                    TagNameInput.val(data.ProjectTagName);
+                    TagName.text(data.ProjectTagName);
+                    editmode = false;
+                    createModeToggle();
+                    getDatas();
+                }).fail(err => {
+                    console.log(err.statusText);
+                });
+            });
+
+            $("#edit").on("click", function () {
+                editmode = true;
+                createModeToggle();
+                getDatas();
+            })
+            $("#save").on("click", saveEvent);
+
+            TagNameInput.on("keydown", function (event) {
+                if (event.keyCode === 13) {
+                    event.preventDefault();
+                    saveEvent();
+                }
+            });
+            $(document).on("click", function (event) {
+
+                const $target = $(event.target);
+
+                if (!$target.is($dropMenu) && !$target.closest($dropMenu).length) {
+                    $dropMenu.removeClass("active");
+                }
+            });
+            $("#drop-btn").on("click", function () {
+                if ($dropMenu.hasClass("active")) {
+                    $dropMenu.removeClass("active");
+                } else {
+                    $.ajax({
+                        url: "/ProjectTag/GetDatas",
+                        type: "POST",
+                        data: {
+                            input: "",
+                            getCompleteResult: false
+                        }
+                    }).done(data => {
+                        $dropMenu.empty();
+                        for (let i = 0; i < data.length; i++) {
+                            $dropMenu.append(toListDOM(tagsNameToHtmlListString(data[i])));
+                        }
+                        $dropMenu.addClass("active");
+                    }).fail(err => {
+                        console.log(err.statusText);
+                    });
+                }
+            })
+
+            function saveEvent() {
+                if (TagNameInput.val() == "") {
+                    alert("標籤名稱不可為空白");
+                    return;
+                }
+                $.ajax({
+                    url: "/ProjectTag/CreateOrEdit",
+                    type: "POST",
+                    data: {
+                        id: TagName.data("id"),
+                        projectName: TagNameInput.val()
+                    }
+                }).done(data => {
+                    if (data.IsFail) {
+                        alert(data.ErrorMessage);
+                        return;
+                    }
+                    $("#ProjectTagId").val(data.newVM.ProjectTagId);
+                    TagName.data("id", data.newVM.ProjectTagId);
+                    projectName: TagNameInput.val(data.newVM.ProjectTagName);
+                    TagName.text(data.newVM.ProjectTagName);
+                    editmode = false;
+                    createModeToggle();
+                    getDatas();
+
+                }).fail(err => {
+                    console.log(err.statusText);
+                });
+            }
+            function createModeToggle() {
+                if (editmode) {
+                    $(".d-detail").each(function () {
+                        $(this).addClass("d-none");
+                    });
+                    $(".d-create").each(function () {
+                        $(this).removeClass("d-none");
+                    });
+                }
+                else {
+                    $(".d-detail").each(function () {
+                        $(this).removeClass("d-none");
+                    });
+                    $(".d-create").each(function () {
+                        $(this).addClass("d-none");
+                    });
+                }
+            }
+            $(document).on("click", '.submit', function () {
+                $("#ProjectTagId").val($(this).data("id"));
+                $("#formIndex").submit();
+            })
+
+            function tagsNameToHtmlListString(item) {
+                const htmlString = `
+                            <li class="w-100">
+                                <a class="w-100 fs-6 py-2 text-dark d-block px-1 submit" href="javascript:;" data-id="${item.ProjectTagId}">${item.ProjectTagName}</a>
+                            </li>
+                        `;
+                return htmlString;
+            }
+
+            function toListDOM(htmlString) {
+                const dom = document.createElement('ul');
+                dom.innerHTML = htmlString;
+                return dom.children[0];
+            }
+        })
+    </script>
+}

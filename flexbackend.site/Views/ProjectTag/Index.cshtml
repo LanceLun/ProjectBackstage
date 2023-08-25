@@ -1,0 +1,362 @@
+﻿@model IEnumerable<Discount.dll.Models.ViewModels.ProjectTagIndexVM>
+
+@{
+    ViewBag.Title = "專案標籤管理";
+}
+@section Styles{
+    <link href="~/lib/datatables/css/jquery.datatables.min.css" rel="stylesheet" />
+}
+
+<h2 class="mb-4">專案標籤管理</h2>
+
+<div class="search-bar-container mb-4 d-flex">
+    <div class="left w-75 d-flex justify-content-start me-auto">
+        <div class="w-25">
+            <div class="input-group d-flex">
+                <input class="form-control search-bar" type="text" placeholder="以標籤名稱搜尋...">
+            </div>
+        </div>
+        <div><a href="javascript:;" id="clear-input">清空</a></div>
+        <span>
+            <label class="form-check-label get-complete" for="get-complete-checkbox">
+                <input type="checkbox" class="form-check-input get-complete" id="get-complete-checkbox" />
+                搜尋已完結標籤
+            </label>
+        </span>
+    </div>
+
+
+    <div class="right">
+        <a href="@Url.Action("CreateOrEdit")" class="btn btn-primary text-light">
+            <i class="bi bi-plus-lg"></i> 新增
+        </a>
+    </div>
+</div>
+<table id="DataTables_Table_0" class="pt-table w-100 table table-hover">
+    <thead>
+        <tr>
+            <th class="th-col-0 sticky px-2">
+                <label class="form-check-label">
+                    <input class="form-check-input check-all" type="checkbox">
+                </label>
+            </th>
+            <th class="th-col-3">
+                @Html.DisplayNameFor(model => model.ProjectTagName)
+            </th>
+            <th class="th-col-5">
+                @Html.DisplayNameFor(model => model.ProductItemsStr)
+            </th>
+            <th class="th-col-3">
+                @Html.DisplayNameFor(model => model.CreateAt)
+            </th>
+            <th class="th-col-3">
+                @Html.DisplayNameFor(model => model.ModifiedAt)
+            <th class="th-col-1">
+                @Html.DisplayNameFor(model => model.StatusStr)
+            </th>
+            <th class="th-col-2 text-center">管理</th>
+            <th class="text-center">完結此專案</th>
+        </tr>
+    </thead>
+
+</table>
+<div class="d-flex justify-content-end mt-4">
+    <button id="completeAll" class="btn btn-success me-2">一併完結</button>
+    <button id="incompleteAll" class="btn btn-secondary">一併取消完結</button>
+</div>
+@section Scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/lib/datatables/js/jquery.datatables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            const searchBar = $(".search-bar");
+            const infoArea = $("#info-area");
+
+            getDatas();
+            bindClickEvent();
+
+            function bindClickEvent() {
+                $("#get-complete-checkbox").click(function () {
+                    $(".pt-table").DataTable().destroy();
+                    getDatas();
+                });
+            }
+            $("#clear-input").click(function () {
+                searchBar.val("");
+                $(".pt-table").DataTable().destroy();
+                getDatas();
+            });
+            searchBar.change(function () {
+                $(".pt-table").DataTable().destroy();
+                getDatas();
+            });
+
+            $("#completeAll").on("click", function () {
+                let dataIds = $(".check-item:checked").map(function () {
+                    return $(this).data("id");
+                }).get();
+                let confirmed = confirm(`將更新${dataIds.length}筆資料，是否繼續?`);
+                updateStatus(confirmed, dataIds, true)
+                $(".check-all").prop("checked", false);
+            });
+
+            $("#incompleteAll").on("click", function () {
+                let dataIds = $(".check-item:checked").map(function () {
+                    return $(this).data("id");
+                }).get();
+                let confirmed = confirm(`將更新${dataIds.length}筆資料，是否繼續?`);
+                updateStatus(confirmed, dataIds, false)
+                $(".check-all").prop("checked", false);
+            });
+
+            $(document).on("change", ".status-switch input[type='checkbox']", function () {
+                let isChecked = $(this).prop("checked");
+                let $statusSwitch = $(this).closest(".status-switch");
+                let dataId = [$statusSwitch.data("id")];
+                setTimeout(function () {
+                    let confirmed = confirm("將更改完結狀態，是否繼續?");
+                    updateStatus(confirmed, dataId, isChecked)
+                }, 300)
+            });
+
+            function updateStatus(isConfirmed, dataIds, isChecked) {
+                if (isConfirmed) {
+                    $.ajax({
+                        url: "/ProjectTag/UpdateStatus",
+                        type: "POST",
+                        data: {
+                            ids: dataIds,
+                            isComplete: isChecked
+                        }
+                    }).done(data => {
+                        $(".pt-table").DataTable().destroy();
+                        getDatas();
+                    }).fail(err => {
+                        console.log(err.statusText);
+                        $(".pt-table").DataTable().destroy();
+                        getDatas();
+                    });
+                }
+                else {
+                    $(".pt-table").DataTable().destroy();
+                    getDatas();
+                }
+            }
+            function getDatas() {
+                let inputValue = searchBar.val();
+                let getComplete = $("input.get-complete").prop("checked");
+                $(".pt-table").dataTable({
+                    ajax: {
+                        type: "POST",
+                        url: `/ProjectTag/GetDatas`,
+                        data: {
+                            input: inputValue,
+                            getCompleteResult: getComplete
+                        },
+                        dataSrc: function (data) {
+                            return data;
+                        },
+                    },
+                    columns: [
+                        {
+                            data: null,
+                            render: function (data) {
+                                return `<input class="form-check-input check-item" type="checkbox" data-id="${data.ProjectTagId}"></td>`;
+                            },
+                            orderable: false
+                        },
+                        {
+                            data: "ProjectTagName"
+                        },
+                        {
+                            data: "ProductItemsStr",
+                            orderable: false,
+                            "width": "22%"
+                        },
+                        {
+                            data: null,
+                            render: function (data) {
+                                return convertTimestampToDate(data.CreateAt || "").format('yyyy/MM/dd HH:mm');
+                            }
+                        },
+                        {
+                            data: null,
+                            render: function (data) {
+                                return convertTimestampToDate(data.ModifiedAt || "").format('yyyy/MM/dd HH:mm');
+                            }
+                        },
+                        {
+                            data: null,
+                            render: function (data) {
+                                return `<span class="text-center ${data.Status ? "status-success" : "status-dark"}" >
+                                            ${data.StatusStr}
+                                        </span >`;
+                            }
+                        },
+                        {
+                            data: null,
+                            render: function (data) {
+                                return `${data.Status ?
+                                    `<div class="manage-btn-container d-flex justify-content-center">
+                                        <a href="/ProjectTag/CreateOrEdit?ProjectTagId=${data.ProjectTagId}" class="btn-view"><i class="bi bi-clipboard-check"></i></a>
+                                    </div>` : ""}`;
+                            },
+                            orderable: false
+                        },
+                        {
+                            data: null,
+                            render: function (data) {
+                                return `<div class="d-flex justify-content-center h-100">
+                                            <label class="status-switch" data-id="${data.ProjectTagId}">
+                                                <input type="checkbox" ${data.Status ? "" : "checked"}>
+                                                <span class="slider"></span>
+                                            </label>
+                                        </div>`;
+                            },
+                            orderable: false
+                        }
+                    ],
+                    order: [
+                        [5, "desc"]
+                    ],
+                    language: {
+                        paginate: {
+                            previous: '<i class="bi bi-chevron-left"></i>',
+                            next: '<i class="bi bi-chevron-right"></i>'
+                        },
+                        info: "第 _START_ 到 _END_ 筆，總共 _TOTAL_ 筆",
+                    },
+                    dom: '1Brtip',
+                });
+            }
+
+            //function getDatas() {
+            //    let inputValue = searchBar.val();
+            //    let getComplete = $("input.get-complete").prop("checked");
+            //    // 發送AJAX請求
+            //    $.ajax({
+            //        url: "/ProjectTag/GetDatas",
+            //        type: "POST",
+            //        data: {
+            //            input: inputValue,
+            //            getCompleteResult: getComplete
+            //        }
+            //    }).done(data => {
+            //        infoArea.empty();
+            //        for (let i = 0; i < data.length; i++) {
+            //            infoArea.append(toDOM(toHTMLString(data[i])));
+            //        }
+            //        $(".check-all").prop("checked", false);
+            //    }).fail(err => {
+            //        console.log(err.statusText);
+            //    });
+            //}
+
+            //function toHTMLString(item) {
+            //    const htmlString = `
+            //                <tr>
+            //                    <td class="sticky"><input class="form-check-input check-item" type="checkbox" data-id="${item.ProjectTagId}"></td>
+            //                    <td class="sticky">
+            //                        ${item.ProjectTagName}
+            //                    </td>
+            //                    <td>
+            //                        ${item.ProductItemsStr}
+            //                    </td>
+            //                    <td>
+            //                        ${convertTimestampToDate(item.CreateAt || "").format('yyyy/MM/dd HH:mm')}
+            //                    </td>
+            //                    <td>
+            //                        ${convertTimestampToDate(item.ModifiedAt || "").format('yyyy/MM/dd HH:mm')}
+            //                    </td>
+            //                    <td>
+            //                        <span class="text-center ${item.Status ? "status-success" : "status-dark"}">
+            //                            ${item.StatusStr}
+            //                        </span>
+            //                    </td>
+            //                    <td>
+            //                        ${item.Status ?
+            //            `<div class="manage-btn-container d-flex justify-content-center">
+            //                            <a href="/ProjectTag/CreateOrEdit?id=${item.ProjectTagId}" class="btn-view"><i class="bi bi-clipboard-check"></i></a>
+            //                          </div>` : ""}
+            //                    </td>
+            //                    <td>
+            //                        <div class="d-flex justify-content-center h-100">
+
+            //                            <label class="status-switch" data-id="${item.ProjectTagId}">
+            //                                <input type="checkbox" ${item.Status ? "" : "checked"}>
+            //                                <span class="slider"></span>
+            //                            </label>
+            //                        </div>
+            //                    </td>
+            //                </tr>
+            //            `;
+            //    return htmlString;
+            //}
+
+            //function toDOM(htmlString) {
+            //    const dom = document.createElement('tbody');
+            //    dom.innerHTML = htmlString;
+            //    return dom.children[0];
+            //}
+
+            // 擴展 Date 對象的格式化方法
+            Date.prototype.format = function (formatString) {
+                const date = this;
+
+                const replacements = {
+                    'yyyy': date.getFullYear(),
+                    'MM': padZero(date.getMonth() + 1),
+                    'dd': padZero(date.getDate()),
+                    'HH': padZero(date.getHours()),
+                    'mm': padZero(date.getMinutes()),
+                    'ss': padZero(date.getSeconds())
+                };
+
+                const regex = /yyyy|MM|dd|HH|mm|ss/g;
+
+                return formatString.replace(regex, match => replacements[match]);
+            };
+
+            // 補零函數，用於確保數字始終是兩位數
+            function padZero(number) {
+                return String(number).padStart(2, '0');
+            }
+
+            function convertTimestampToDate(timestampString) {
+                const timestampRegex = /\/Date\((\d+)\)\//;
+                const match = timestampString.match(timestampRegex);
+                if (match && match[1]) {
+                    const timestamp = parseInt(match[1]);
+                    return new Date(timestamp);
+                }
+                return null;
+            }
+            $("table tr").each(function () {
+                let items = $(this).find(".sticky");
+                let leftInstance = 0;
+                for (let i = 0; i < items.length; i++) {
+                    $(items[i]).css({
+                        'left': leftInstance + 'px'
+                    });
+                    leftInstance += $(items[i]).outerWidth(true);
+                }
+            });
+
+            $(".check-all").on('change', function () {
+                $(this).closest('table').find('input[type="checkbox"].check-item').prop('checked', $(this).is(':checked'));
+            })
+            $("table").on('change', 'input[type="checkbox"].check-item', function () {
+                var tableContainer = $(this).closest('table');
+                var checkboxes = tableContainer.find('input[type="checkbox"].check-item');
+                var checkAll = tableContainer.find('.check-all');
+
+                if (checkboxes.length === checkboxes.filter(':checked').length) {
+                    checkAll.prop('checked', true);
+                } else {
+                    checkAll.prop('checked', false);
+                }
+            });
+        });
+    </script>
+    <script src="~/Scripts/table.js"></script>
+}

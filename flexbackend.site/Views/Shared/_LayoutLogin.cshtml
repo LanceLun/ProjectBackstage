@@ -1,0 +1,38 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Flex Sports後台管理系統</title>
+    <link rel="icon" type="image/x-icon" href="~/Content/flex.ico" />
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Styles.Render("~/Content/bootstrap-icons-1.10.5/font/bootstrap-icons.css")
+    @Styles.Render("~/Content/variables.css")
+    @Styles.Render("~/Content/IndexPageStyle.css")
+    @Styles.Render("~/Content/table.css")
+    @RenderSection("styles", required: false)
+
+</head>
+<body>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="container-right">
+            <main id="main-area" class="gray-scroll p-3">
+                <div class="container">
+                    @RenderBody()
+                </div>
+            </main>
+        </div>
+    }
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    <script src="~/Scripts/table.js"></script>
+    @RenderSection("scripts", required: false)
+    @Scripts.Render("~/Scripts/flexBE_main.js")
+</body>
+</html>

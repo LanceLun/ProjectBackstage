@@ -1,0 +1,86 @@
+﻿@model EFModels.EFModels.CustomizedShoesPo
+
+@{
+    ViewBag.Title = "商品詳情";
+}
+
+<h2>商品詳情</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            <label class="form-label" for="">鞋種編號</label>
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ShoesName)
+        </dd>
+
+        <dt>
+            <label class="form-label" for="">商品描述</label>
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ShoesDescription)
+        </dd>
+
+        <dt>
+            <label class="form-label" for="">產地</label>
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ShoesOrigin)
+        </dd>
+
+        <dt>
+            <label class="form-label" for="">產品售價</label>
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ShoesUnitPrice)
+        </dd>
+
+        <dt>
+            <label class="form-label" for="">是否下架</label>
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+        <dt>
+            <label class="form-label" for="">功能分類</label>
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ShoesCategory.ShoesCategoryName)
+        </dd>
+
+        <dt>
+            <label class="form-label" for="">顏色分類</label>
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ShoesColorCategory.ColorName)
+        </dd>
+        <dt>
+            <label class="form-label" for="">創建時間</label>
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DataCreateTime)
+        </dd>
+
+        <dt>
+            <label class="form-label" for="">編輯時間</label>
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DataEditTime)
+        </dd>
+
+    </dl>
+</div>
+<p class="btn btn-dark">
+    @Html.ActionLink("回到產品管理", "Index")
+</p>

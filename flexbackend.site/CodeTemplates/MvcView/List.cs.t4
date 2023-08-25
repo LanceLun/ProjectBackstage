@@ -1,0 +1,237 @@
+﻿<#@ template language="C#" HostSpecific="True" #>
+<#@ output extension=".cshtml" #>
+<#@ include file="Imports.include.t4" #>
+@model IEnumerable<#= "<" + ViewDataTypeName + ">" #>
+<#
+// The following chained if-statement outputs the file header code and markup for a partial view, a view using a layout page, or a regular view.
+if(IsPartialView) {
+#>
+
+<#
+} else if(IsLayoutPageSelected) {
+#>
+
+@{
+    ViewBag.Title = "<#= ViewName#>";
+<#
+if (!String.IsNullOrEmpty(LayoutPageFile)) {
+#>
+    Layout = "<#= LayoutPageFile#>";
+<#
+}
+#>
+}
+
+<h2><#= ViewName#></h2>
+
+<#
+} else {
+#>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title><#= ViewName #></title>
+</head>
+<body>
+<#
+    PushIndent("    ");
+}
+#>
+<p>
+    
+</p>
+<div class="search-bar-container mb-4 d-flex">
+            <div class="left w-50 me-auto">
+                @* 輸入框區域 寬度可移除下方class w-50 自行調整 *@
+                <div class="w-50">
+                    <div class="input-group">
+                        <input class="form-control search-bar" type="text" placeholder="搜尋...">
+                    </div>
+                </div>
+            </div>
+
+            
+            <div class="right">
+                <a href="@Url.Action("Create")" class="btn btn-primary">
+                    <i class="bi bi-plus-lg"></i> 新增
+                </a>
+            </div>
+        </div>
+    <table>
+        <thead>
+            <tr>
+            @* 有class sort-btn 能當排序按鈕，點擊切換上下箭頭，不過資料排序function須自己處理 *@
+                            @* 同時也有提供 th-col- 作為粗略每列寬度設定
+                                    th-col-0 至 th-col-20
+                                    超過100%資料不會溢出 也不會換行
+                                    如有細緻設定需求，可自己寫css設定寬度
+                            *@
+            <th class="th-col-0 sticky">
+                <label class="form-check-label">
+                    <input class="form-check-input check-all" type="checkbox">
+                </label>
+            </th>
+        <#
+        IEnumerable<PropertyMetadata> properties = ModelMetadata.Properties;
+        foreach (PropertyMetadata property in properties) {
+            if (property.Scaffold && !property.IsPrimaryKey && !property.IsForeignKey) {
+        #>
+        <#
+                // We do not want to show any association properties for which there is
+                // no associated foreign key.
+                if (property.IsAssociation && GetRelatedModelMetadata(property) == null) {
+                    continue;
+                }
+        #>
+                <th class="th-col-1">
+                    @Html.DisplayNameFor(model => model.<#= GetValueExpression(property) #>)
+                </th>
+        <#
+            }
+        }
+        #>
+                <th>管理</th>
+            </tr>
+        </thead>
+    <tbody>
+    @* 如有照片要放 
+        格式:
+        <td><div class="table-img-container"><img src="XXX.png" alt=""></div></td>
+    *@
+    @*  顯示資料內有定義了狀態框，
+            如有需展示狀態顏色，請在td內增加一個span，且定義class
+            有提供四種顏色:
+                綠色 : status-success
+                灰色 : status-dark
+                紅色 : status-danger
+                藍色 : status-primary
+            可依自己需求使用
+
+            格式: <td class="text-center"><span class="status-success}">進行中</span></td>
+    *@
+
+    @foreach (var item in Model) {
+        <tr>
+        @* 下方data-id後方欄位抓id，可方便勾選框抓資料 *@
+        <td class="sticky"><input class="form-check-input check-item" type="checkbox" data-id="${}"></td>
+    <#
+    foreach (PropertyMetadata property in properties) {
+        if (property.Scaffold && !property.IsPrimaryKey && !property.IsForeignKey) {
+    #>
+    <#
+            // We do not want to show any association properties for which there is
+            // no associated foreign key.
+            if (property.IsAssociation && GetRelatedModelMetadata(property) == null) {
+                continue;
+            }
+    #>
+            <td>
+                @Html.DisplayFor(modelItem => <#= "item." + GetValueExpression(property) #>)
+            </td>
+    <#
+        }
+    }
+
+    string pkName = GetPrimaryKeyName();
+    if (pkName != null) {
+    #>
+            <td>
+                <div class="manage-btn-container d-flex">
+                    <a href="@Url.Action("Edit", new { id = item.<#= pkName #>  })" class="btn-edit me-1"><i class="bi bi-pencil-square"></i></a>
+                    <a href="@Url.Action("Details", new { id = item.<#= pkName #>  })" class="btn-view me-1"><i class="bi bi-clipboard-check"></i></a>
+                    <a href="@Url.Action("Delete", new { id = item.<#= pkName #>  })" class="btn-del"><i class="bi bi-trash-fill"></i></a>
+                </div>
+            </td>
+    <#
+    } else {
+    #>
+            <td>
+                <div class="manage-btn-container d-flex">
+                    <a href="@Url.Action("Edit", new {/* id=item.PrimaryKey */ })" class="btn-edit me-1"><i class="bi bi-pencil-square"></i></a>
+                    <a href="@Url.Action("Details", new {/* id=item.PrimaryKey */ })" class="btn-view me-1"><i class="bi bi-clipboard-check"></i></a>
+                    <a href="@Url.Action("Delete", new {/* id=item.PrimaryKey */ })" class="btn-del"><i class="bi bi-trash-fill"></i></a>
+                    
+                </div>
+            </td>
+    <#
+    }
+    #>
+        </tr>
+    }
+    </tbody>
+    </table>
+@section Scripts{
+    <script>
+        window.onload = function() {
+  // 替排序按鈕寫入排序箭頭出現事件
+  document.querySelectorAll(".sort-btn").forEach(item => {
+    item.addEventListener("click", function() {
+      // sortClickHandler 可寫入第二個參數，是委派
+      sortClickHandler(this);
+    });
+  });
+
+  function sortClickHandler(targetBtn, callback = null) {
+    truncateSortAttr(targetBtn);
+    resetSortBtns();
+
+    var sortValue = targetBtn.getAttribute('sort');
+    var newSortValue = (sortValue && sortValue == 'asc') ? 'desc' : 'asc';
+    setSort(targetBtn, newSortValue);
+
+    callback && callback();
+  }
+
+  // 給按鈕加上排序箭頭
+  function setSort(sortBtn, setSort) {
+    sortBtn.setAttribute('sort', setSort);
+    if (setSort == 'asc') {
+      sortBtn.innerHTML += '<i class="bi bi-arrow-up-short"></i>';
+    } else if (setSort == 'desc') {
+      sortBtn.innerHTML += '<i class="bi bi-arrow-down-short"></i>';
+    }
+  }
+
+  // 清空所有排序按鈕的箭頭
+  function resetSortBtns() {
+    var sortBtns = document.querySelectorAll(".sort-btn");
+    sortBtns.forEach(function(btn) {
+      if (btn.innerHTML.includes("</i>")) {
+        btn.innerHTML = btn.innerHTML.substring(0, btn.innerHTML.indexOf("<"));
+      }
+    });
+  }
+
+  // 清空被點擊外的其他按鈕的排序attr
+  function truncateSortAttr(thisBtn = null) {
+    var sortBtns = document.querySelectorAll(".sort-btn");
+    sortBtns.forEach(function(btn) {
+      if (btn !== thisBtn) {
+        btn.removeAttribute('sort');
+      }
+    });
+  }
+};
+    </script>
+}
+<#
+// The following code closes the tag used in the case of a view using a layout page and the body and html tags in the case of a regular view page
+#>
+<#
+if(!IsPartialView && !IsLayoutPageSelected) {
+    ClearIndent();
+#>
+
+</body>
+</html>
+<#
+}
+#>
+<#@ include file="ModelMetadataFunctions.cs.include.t4" #>

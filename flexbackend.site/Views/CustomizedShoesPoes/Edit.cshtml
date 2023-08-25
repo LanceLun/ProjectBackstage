@@ -1,0 +1,95 @@
+﻿@model Customized_Shoes.dll.Models.ViewModels.CustomizedShoesEditVM
+
+@{
+    ViewBag.Title = "編輯商品";
+    var shoesCategory = ViewBag.ShoesCategoryId as SelectList;
+    var colorCategory = ViewBag.ShoesColor as SelectList;
+}
+
+
+<h2>編輯商品</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal row">
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.ShoesProductId)
+
+    <div class="mb-3">
+        @Html.LabelFor(model => model.ShoesName, htmlAttributes: new { @class = "form-label" })
+
+        @Html.EditorFor(model => model.ShoesName, new { htmlAttributes = new { @class = "form-control", placeholder = "鞋種編號" } })
+        @Html.ValidationMessageFor(model => model.ShoesName, "", new { @class = "text-danger" })
+    </div>
+    <div class="col-12">
+        <div class="mb-3">
+            @Html.LabelFor(model => model.ShoesDescription, htmlAttributes: new { @class = "form-label" })
+
+            @Html.EditorFor(model => model.ShoesDescription, new { htmlAttributes = new { @class = "form-control", placeholder = "商品描述" } })
+            @Html.ValidationMessageFor(model => model.ShoesDescription, "", new { @class = "text-danger" })
+        </div>
+    </div>
+        <div class="mb-3">
+            @Html.LabelFor(model => model.ShoesOrigin, htmlAttributes: new { @class = "form-label" })
+
+            @Html.EditorFor(model => model.ShoesOrigin, new { htmlAttributes = new { @class = "form-control", placeholder = "產地" } })
+            @Html.ValidationMessageFor(model => model.ShoesOrigin, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="mb-3">
+            @Html.LabelFor(model => model.ShoesUnitPrice, htmlAttributes: new { @class = "form-label" })
+
+            @Html.EditorFor(model => model.ShoesUnitPrice, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.ShoesUnitPrice, "", new { @class = "text-danger" })
+        </div>
+        <div class="mb-3 d-flex">
+                @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "form-label" })
+
+                <div class="checkbox ms-3">
+                    @Html.EditorFor(model => model.Status)
+                    @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
+                </div>
+        </div>
+        <div class="col-12 d-flex mb-3">
+            <div class="mb-3">
+                @*@Html.LabelFor(model => model.fk_ShoesCategoryId, "fk_ShoesCategoryId", htmlAttributes: new { @class = "form-label" })*@
+                <label class="form-label" for="fk_ShoesCategoryId">功能分類</label>
+                @Html.DropDownListFor(model => model.fk_ShoesCategoryId, ViewBag.ShoesCategoryId as SelectList, new { @class = "form-select" })
+                @Html.ValidationMessageFor(model => model.fk_ShoesCategoryId, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="mb-3">
+                @*@Html.LabelFor(model => model.fk_ShoesColorId, "fk_ShoesColorId", htmlAttributes: new { @class = "form-label" })*@
+                <label class="form-label" for="fk_ShoesColorId">主顏色分類</label>
+                @Html.DropDownListFor(model => model.fk_ShoesColorId, ViewBag.ShoesColor as SelectList, new { @class = "form-select" })
+                @Html.ValidationMessageFor(model => model.fk_ShoesColorId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+            <div class="col-12 d-flex mb-3">
+                <div class="col-3">
+                    @Html.LabelFor(model => model.CreateTime, htmlAttributes: new { @class = "form-label" })
+
+                    @Html.EditorFor(model => model.CreateTime, new { htmlAttributes = new { @class = "form-control bg-secondary", @readonly = "readonly" } })
+                    @Html.ValidationMessageFor(model => model.CreateTime, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="col-3 ms-3">
+                    @Html.LabelFor(model => model.EditTime, htmlAttributes: new { @class = "form-label" })
+
+                    @Html.EditorFor(model => model.EditTime, new { htmlAttributes = new { @class = "form-control bg-secondary", @readonly = "readonly" } })
+                    @Html.ValidationMessageFor(model => model.EditTime, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="mb-3">
+                <input type="submit" value="確認" class="btn btn-primary" /> |
+                <input type="button" value="回到產品管理" class="btn btn-dark" onclick='location.href="@Url.Action("Index")"' />
+            </div>
+        </div>
+    }
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+    }

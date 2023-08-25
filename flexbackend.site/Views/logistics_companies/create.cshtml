@@ -1,0 +1,47 @@
+﻿@model Orders.ViewModels.logistics_companiesVM
+
+@{
+    ViewBag.Title = "create";
+}
+
+<h2>新增物流公司</h2>
+
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="row">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="mb-3">
+            @Html.LabelFor(model => model.name, htmlAttributes: new { @class = "form-label" })
+                @Html.EditorFor(model => model.name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.name, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="mb-3">
+            @Html.LabelFor(model => model.tel, htmlAttributes: new { @class = "form-label" })
+                @Html.EditorFor(model => model.tel, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.tel, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="mb-3">
+            @Html.LabelFor(model => model.logistics_description, htmlAttributes: new { @class = "form-label" })
+                @Html.EditorFor(model => model.logistics_description, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.logistics_description, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="mb-3">
+                <input type="submit" value="新增" class="btn btn-primary" />
+        </div>
+    </div>
+}
+
+<div class="btn btn-primary text-bg-light">
+    @Html.ActionLink("取消新增", "Logistics_companiesIndex")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

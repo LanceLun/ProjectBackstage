@@ -1,0 +1,195 @@
+﻿@model Orders.ViewModels.OrdersIndexVM
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>新增</h2>
+
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+<div class="mb-3">
+    <label>
+        @Html.CheckBoxFor(model => model.IsDefault, new { id = "chkIsDefault" })
+        新增預設
+    </label>
+</div>
+<div class="row">
+    <h4>訂單</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+    <div class="mb-3">
+        @Html.LabelFor(model => model.fk_member_Id, htmlAttributes: new { @class = "form-label" })
+        @Html.EditorFor(model => model.fk_member_Id, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.fk_member_Id, "", new { @class = "text-danger" })
+    </div>
+    <div class="mb-3">
+        @Html.LabelFor(model => model.logistics_companys, htmlAttributes: new { @class = "form-label" })
+        @if (TempData["LogisticsCompanies"] != null && ((Dictionary<int, string>)TempData["LogisticsCompanies"]).Any())
+        {
+            @Html.DropDownListFor(model => model.logistics_company_Id, new SelectList((Dictionary<int, string>)TempData["LogisticsCompanies"], "Key", "Value"), "請選擇", new { @class = "form-control" })
+        }
+        else
+        {
+            <p>No logistics companies available.</p>
+        }
+        @Html.ValidationMessageFor(model => model.logistics_company_Id, "", new { @class = "text-danger" })
+    </div>
+    <div class="mb-3">
+        @Html.LabelFor(model => model.pay_method, htmlAttributes: new { @class = "form-label" })
+        @if (TempData["PayMethods"] != null && ((Dictionary<int, string>)TempData["PayMethods"]).Any())
+        {
+            @Html.DropDownListFor(model => model.pay_method_Id, new SelectList((Dictionary<int, string>)TempData["PayMethods"], "Key", "Value"), "請選擇", new { @class = "form-control" })
+        }
+        else
+        {
+            <p>No pay methods available.</p>
+        }
+        @Html.ValidationMessageFor(model => model.pay_method_Id, "", new { @class = "text-danger" })
+    </div>
+    <div class="mb-3">
+        @Html.LabelFor(model => model.coupon_name, htmlAttributes: new { @class = "form-label" })
+        @Html.EditorFor(model => model.coupon_name, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.coupon_name, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="mb-3">
+        @Html.LabelFor(model => model.coupon_discount, htmlAttributes: new { @class = "form-label" })
+        @Html.EditorFor(model => model.coupon_discount, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.coupon_discount, "", new { @class = "text-danger" })
+    </div>
+    @*<div id="memberData" style="display: none;">
+        <div class="mb-3">
+            @Html.LabelFor(model => model.cellphone, htmlAttributes: new { @class = "form-label" })
+            @Html.DisplayFor(model => model.cellphone, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+        <div class="mb-3">
+            @Html.LabelFor(model => model.receiver, htmlAttributes: new { @class = "form-label" })
+            @Html.DisplayFor(model => model.receiver, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+        <div class="mb-3">
+            @Html.LabelFor(model => model.recipient_address, htmlAttributes: new { @class = "form-label" })
+            @Html.DisplayFor(model => model.recipient_address, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+    </div>*@
+    @if (Model.IsDefault)
+    {
+        <div class="mb-3">
+            @Html.LabelFor(model => model.cellphone, htmlAttributes: new { @class = "form-label" })
+            @Html.EditorFor(model => model.cellphone, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+        <div class="mb-3">
+            @Html.LabelFor(model => model.receiver, htmlAttributes: new { @class = "form-label" })
+            @Html.EditorFor(model => model.receiver, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+        <div class="mb-3">
+            @Html.LabelFor(model => model.recipient_address, htmlAttributes: new { @class = "form-label" })
+            @Html.EditorFor(model => model.recipient_address, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+    }
+    else
+    {
+        <div class="mb-3">
+            @Html.LabelFor(model => model.cellphone, htmlAttributes: new { @class = "form-label" })
+            @Html.EditorFor(model => model.cellphone, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.cellphone, "", new { @class = "text-danger" })
+        </div>
+        <div class="mb-3">
+            @Html.LabelFor(model => model.receiver, htmlAttributes: new { @class = "form-label" })
+            @Html.EditorFor(model => model.receiver, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.receiver, "", new { @class = "text-danger" })
+        </div>
+        <div class="mb-3">
+            @Html.LabelFor(model => model.recipient_address, htmlAttributes: new { @class = "form-label" })
+            @Html.EditorFor(model => model.recipient_address, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.recipient_address, "", new { @class = "text-danger" })
+        </div>
+    }
+    <div class="mb-3">
+        @Html.LabelFor(model => model.receipt, htmlAttributes: new { @class = "form-label" })
+        @Html.EditorFor(model => model.receipt, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.receipt, "", new { @class = "text-danger" })
+    </div>
+    <div class="mb-3">
+        @Html.LabelFor(model => model.order_description, htmlAttributes: new { @class = "form-label" })
+        @Html.EditorFor(model => model.order_description, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.order_description, "", new { @class = "text-danger" })
+    </div>
+
+
+    <div class="mb-3">
+        <input type="submit" value="加入" class="btn btn-primary" />
+    </div>
+</div>
+}
+
+<div>
+    <a href="@Url.Action("OrdersIndex")" class="btn btn-primary text-light">
+        回到訂單管理
+    </a>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+<script>
+    $(document).ready(function () {
+        $('#chkIsDefault').change(function () {
+            if ($(this).is(':checked')) {
+                // 如果選中新增預設，將IsDefault屬性設置為true
+                $('#IsDefault').val('True');
+            } else {
+                // 如果取消選中新增預設，將IsDefault屬性設置為false
+                $('#IsDefault').val('False');
+            }
+        });
+    });
+    //$(document).ready(function () {
+    //    $('#chkIsDefault').change(function () {
+    //        if ($(this).is(':checked')) {
+    //            $('#cellphone').prop('readonly', true);
+    //            $('#receiver').prop('readonly', true);
+    //            $('#recipient_address').prop('readonly', true);
+    //        } else {
+    //            $('#cellphone').prop('readonly', false);
+    //            $('#receiver').prop('readonly', false);
+    //            $('#recipient_address').prop('readonly', false);
+    //        }
+    //    });
+    //});
+    $(document).ready(function () {
+            $('#chkIsDefault').change(function () {
+                if ($(this).is(':checked')) {
+                    var memberId = $('#fk_member_Id').val();
+                    if (memberId) {
+                        $.ajax({
+                            url: '@Url.Action("GetMemberData", "Orders")',
+                            type: 'GET',
+                            data: { memberId: memberId },
+                            success: function (result) {
+                                if (result.success) {
+                                    $('#memberData').show();
+                                    $('#cellphone').val(result.data.cellphone);
+                                    $('#receiver').val(result.data.receiver);
+                                    $('#recipient_address').val(result.data.recipient_address);
+                                } else {
+                                    $('#memberData').hide();
+                                    alert(result.message);
+                                }
+                            },
+                            error: function () {
+                                $('#memberData').hide();
+                                alert('Error occurred while retrieving member data.');
+                            }
+                        });
+                    }
+                } else {
+                    $('#memberData').hide();
+                }
+            });
+        });
+</script>
+}

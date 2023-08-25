@@ -1,0 +1,116 @@
+﻿@model List<Flex_Activity.dll.Models.ViewModels.DapperVM.OneToOneReservationDetailDapperVM>
+
+@{
+    ViewBag.Title = "Details";
+}
+@section Styles{
+    <style>
+        .hidden{
+            display:none;
+        }
+    </style>
+    }
+
+<h2>預約詳細資訊</h2>
+
+<div>
+    @*<h4>OneToOneReservationDetailDapperVM</h4>*@
+    <hr />
+    <dl class="dl-horizontal">
+        @{
+            object reservationSpeakerId = null; // 創一個變數來存 ReservationSpeakerId，這樣末端的button才能抓到值
+            object memberId = null;
+        }
+
+        @foreach (var item in Model)
+        {
+            <dt>
+                @Html.DisplayNameFor(model => item.MemberId)
+                @{ memberId = item.MemberId;}
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => item.MemberId)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => item.Name)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => item.Name)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => item.Mobile)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => item.Mobile)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => item.ReservationStartTime)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => item.ReservationStartTime)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => item.ReservationEndTime)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => item.ReservationEndTime)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => item.BranchName)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => item.BranchName)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => item.ReservationCreatedDate)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => item.ReservationCreatedDate)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => item.ReservationStatusDescription)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => item.ReservationStatusDescription)
+            </dd>
+
+            <dt class="hidden">
+                @Html.DisplayNameFor(model => item.fk_ReservationSpeakerId)
+            </dt>
+
+            <dd class="hidden">
+                @Html.DisplayFor(model => item.fk_ReservationSpeakerId)
+                @{ reservationSpeakerId = item.fk_ReservationSpeakerId; }
+            </dd>
+
+            <dt class="hidden">
+                @Html.DisplayNameFor(model => item.fk_ReservationStatusId)
+            </dt>
+
+            <dd class="hidden">
+                @Html.DisplayFor(model => item.fk_ReservationStatusId)
+            </dd>
+        }
+
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { fk_ReservationSpeakerId = reservationSpeakerId, MemberId = memberId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

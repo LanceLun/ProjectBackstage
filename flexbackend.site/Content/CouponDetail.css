@@ -1,0 +1,63 @@
+#detail-bg {
+    position: fixed;
+    top: var(--header-height);
+    left: var(--sidebar-width);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    width: calc(100% - var(--sidebar-width));
+    height: calc(100vh - var(--header-height));
+    margin: 0 auto;
+    padding: 5px 10px;
+    border-radius: 5px;
+    background: rgba(30, 30, 30, 0.2);
+}
+#detail-area {
+    position: absolute;
+    top: calc((100% - 400px) / 2);
+    left: 150px;
+    width: calc(100% - 300px);
+    height: 400px;
+    transition: height 0.2s;
+    overflow: visible;
+}
+
+#detail {
+    padding: 30px 40px;
+    background: #fff;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+#detail-bg.hide{
+    visibility: hidden;
+}
+#detail-bg.hide > #detail-area {
+    height: 0px;
+}
+#detail-area > .close-btn {
+    position: absolute;
+    top: -50px;
+    right: 0;
+    font-size: 35px;
+    height: 40px;
+    width: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 3px #eee solid;
+    color: #eee;
+    cursor: pointer;
+    transition: color .4s, border-color .4s, background-color .4s;
+    border-radius: 15%;
+}
+    #detail-area > .close-btn:hover {
+        background-color: rgba(100,100,100,.3);
+        border: 3px #fff solid;
+        color: #fff;
+    }
+
+    @media(max-width:768px) {
+        #detail-bg {
+        left: 0;
+        width: 100%;
+    }
+}

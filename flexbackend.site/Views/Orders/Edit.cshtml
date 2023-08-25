@@ -1,0 +1,201 @@
+﻿@model Orders.ViewModels.OrdersIndexVM
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>編輯訂單</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+<div class="form-horizontal">
+
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.Id)
+
+    @*<div class="mb-3">
+            @Html.LabelFor(model => model.ordertime, htmlAttributes: new { @class = "form-label" })
+
+                @Html.EditorFor(model => model.ordertime, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ordertime, "", new { @class = "text-danger" })
+        </div>*@
+
+    <div class="mb-3">
+        @Html.LabelFor(model => model.fk_member_Id, htmlAttributes: new { @class = "form-label" })
+
+        @Html.EditorFor(model => model.fk_member_Id, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+        @Html.ValidationMessageFor(model => model.fk_member_Id, "", new { @class = "text-danger" })
+    </div>
+
+    @*<div class="mb-3">
+        @Html.LabelFor(model => model.total_quantity, htmlAttributes: new { @class = "form-label" })
+
+        @Html.EditorFor(model => model.total_quantity, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.total_quantity, "", new { @class = "text-danger" })
+    </div>*@
+
+    @*<div class="mb-3">
+            @Html.LabelFor(model => model.logistics_company_Id, htmlAttributes: new { @class = "form-label" })
+
+            @Html.EditorFor(model => model.logistics_company_Id, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.logistics_company_Id, "", new { @class = "text-danger" })
+        </div>*@
+    <div class="mb-3">
+        @Html.LabelFor(model => model.logistics_companys, htmlAttributes: new { @class = "form-label" })
+        @if (TempData["LogisticsCompanies"] != null && ((Dictionary<int, string>)TempData["LogisticsCompanies"]).Any())
+        {
+            @Html.DropDownListFor(model => model.logistics_company_Id, new SelectList((Dictionary<int, string>)TempData["LogisticsCompanies"], "Key", "Value"), "請選擇", new { @class = "form-control" })
+        }
+        else
+        {
+            <p>No logistics companies available.</p>
+        }
+        @Html.ValidationMessageFor(model => model.logistics_company_Id, "", new { @class = "text-danger" })
+    </div>
+
+    @*<div class="mb-3">
+        @Html.LabelFor(model => model.order_status_Id, htmlAttributes: new { @class = "form-label" })
+
+        @Html.EditorFor(model => model.order_status_Id, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.order_status_Id, "", new { @class = "text-danger" })
+    </div>*@
+    <div class="mb-3">
+        @Html.LabelFor(model => model.order_status, htmlAttributes: new { @class = "form-label" })
+        @if (TempData["orderStatuses"] != null && ((Dictionary<int, string>)TempData["orderStatuses"]).Any())
+        {
+            @Html.DropDownListFor(model => model.order_status_Id, new SelectList((Dictionary<int, string>)TempData["orderStatuses"], "Key", "Value"), "請選擇", new { @class = "form-control" })
+        }
+        else
+        {
+        <p>No order_status available.</p>
+        }
+        @Html.ValidationMessageFor(model => model.order_status_Id, "", new { @class = "text-danger" })
+    </div>
+
+    @*<div class="mb-3">
+            @Html.LabelFor(model => model.pay_method_Id, htmlAttributes: new { @class = "form-label" })
+
+            @Html.EditorFor(model => model.pay_method_Id, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.pay_method_Id, "", new { @class = "text-danger" })
+        </div>*@
+    <div class="mb-3">
+        @Html.LabelFor(model => model.pay_method, htmlAttributes: new { @class = "form-label" })
+        @if (TempData["PayMethods"] != null && ((Dictionary<int, string>)TempData["PayMethods"]).Any())
+        {
+            @Html.DropDownListFor(model => model.pay_method_Id, new SelectList((Dictionary<int, string>)TempData["PayMethods"], "Key", "Value"), "請選擇", new { @class = "form-control" })
+        }
+        else
+        {
+            <p>No pay methods available.</p>
+        }
+        @Html.ValidationMessageFor(model => model.pay_method_Id, "", new { @class = "text-danger" })
+    </div>
+
+    @*<div class="mb-3">
+            @Html.LabelFor(model => model.pay_status_Id, htmlAttributes: new { @class = "form-label" })
+
+            @Html.EditorFor(model => model.pay_status_Id, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.pay_status_Id, "", new { @class = "text-danger" })
+        </div>*@
+    <div class="mb-3">
+        @Html.LabelFor(model => model.pay_status, htmlAttributes: new { @class = "form-label" })
+        @if (TempData["paystatuses"] != null && ((Dictionary<int, string>)TempData["paystatuses"]).Any())
+        {
+            @Html.DropDownListFor(model => model.pay_status_Id, new SelectList((Dictionary<int, string>)TempData["paystatuses"], "Key", "Value"), "請選擇", new { @class = "form-control" })
+        }
+        else
+        {
+            <p>No pay methods available.</p>
+        }
+        @Html.ValidationMessageFor(model => model.pay_status_Id, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="mb-3">
+        @Html.LabelFor(model => model.coupon_name, htmlAttributes: new { @class = "form-label" })
+
+        @Html.EditorFor(model => model.coupon_name, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.coupon_name, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="mb-3">
+        @Html.LabelFor(model => model.coupon_discount, htmlAttributes: new { @class = "form-label" })
+
+        @Html.EditorFor(model => model.coupon_discount, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.coupon_discount, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="mb-3">
+        @Html.LabelFor(model => model.freight, htmlAttributes: new { @class = "form-label" })
+
+        @Html.EditorFor(model => model.freight, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.freight, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="mb-3">
+        @Html.LabelFor(model => model.cellphone, htmlAttributes: new { @class = "form-label" })
+
+        @Html.EditorFor(model => model.cellphone, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.cellphone, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="mb-3">
+        @Html.LabelFor(model => model.receipt, htmlAttributes: new { @class = "form-label" })
+
+        @Html.EditorFor(model => model.receipt, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.receipt, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="mb-3">
+        @Html.LabelFor(model => model.receiver, htmlAttributes: new { @class = "form-label" })
+
+        @Html.EditorFor(model => model.receiver, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.receiver, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="mb-3">
+        @Html.LabelFor(model => model.recipient_address, htmlAttributes: new { @class = "form-label" })
+
+        @Html.EditorFor(model => model.recipient_address, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.recipient_address, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="mb-3">
+        @Html.LabelFor(model => model.order_description, htmlAttributes: new { @class = "form-label" })
+
+        @Html.EditorFor(model => model.order_description, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.order_description, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="mb-3">
+        @Html.LabelFor(model => model.close, htmlAttributes: new { @class = "form-label" })
+
+        @Html.CheckBoxFor(model => model.close, new { htmlAttributes = new { @class = "status-switch" } })
+        @Html.ValidationMessageFor(model => model.close, "", new { @class = "text-danger" })
+    </div>
+
+    @*<div class="mb-3">
+        @Html.LabelFor(model => model.total_price, htmlAttributes: new { @class = "form-label" })
+
+        @Html.EditorFor(model => model.total_price, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.total_price, "", new { @class = "text-danger" })
+    </div>*@
+
+    <div class="mb-3">
+        <input type="submit" value="儲存" class="btn btn-primary" />
+    </div>
+</div>
+}
+
+<div>
+    <a href="@Url.Action("OrdersIndex")" class="btn btn-primary text-light">
+        回到訂單管理
+    </a>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

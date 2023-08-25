@@ -1,0 +1,85 @@
+﻿@model Flex_Activity.dll.Models.ViewModels.SpeakerDetailVM
+
+@{
+    ViewBag.Title = "Details";
+}
+
+@section Styles{
+    <style>
+        .dl-horizontal dt {
+            margin-bottom: 13px;
+        }
+
+        .dl-horizontal dd {
+            margin-bottom: 30px;
+        }
+    </style>
+}
+<h2>講師資訊</h2>
+
+<div>
+    @*<h4>SpeakerDetailVM</h4>*@
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.SpeakerId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SpeakerId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SpeakerName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SpeakerName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SpeakerPhone)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SpeakerPhone)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FieldName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FieldName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SpeakerImg)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SpeakerImg)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BranchName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BranchName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SpeakerDescription)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SpeakerDescription)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @*@Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |*@
+    @Html.ActionLink("回到講師列表", "Index")
+</p>

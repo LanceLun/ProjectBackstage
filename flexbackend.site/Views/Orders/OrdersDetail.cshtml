@@ -1,0 +1,270 @@
+﻿@model Orders.ViewModels.OrderDetailsVM
+
+@{
+    ViewBag.Title = "OrdersDetail";
+}
+
+<h2>OrdersDetail</h2>
+
+<div>
+    <h4>OrderDetailsVM</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ordertime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ordertime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.fk_member_Id)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.fk_member_Id)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.total_quantity)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.total_quantity)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.logistics_company_Id)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.logistics_company_Id)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.order_status_Id)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.order_status_Id)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.order_status)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.order_status)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.pay_method_Id)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.pay_method_Id)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.pay_method)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.pay_method)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.pay_status_Id)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.pay_status_Id)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.pay_status)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.pay_status)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.coupon_name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.coupon_name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.coupon_discount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.coupon_discount)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.freight)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.freight)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.cellphone)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cellphone)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.receipt)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.receipt)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.receiver)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.receiver)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.recipient_address)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.recipient_address)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.order_description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.order_description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.close_Id)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.close_Id)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.total_price)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.total_price)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SelectedOrderId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SelectedOrderId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.order_Id)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.order_Id)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.product_name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.product_name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.fk_typeId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.fk_typeId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.type)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.type)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.per_price)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.per_price)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.quantity)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.quantity)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.discount_name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.discount_name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.subtotal)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.subtotal)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.discount_subtotal)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.discount_subtotal)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Items_description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Items_description)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @*@Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |*@
+    <div>
+        <a href="@Url.Action("OrdersIndex")" class="btn btn-primary text-light">
+            回到訂單管理
+        </a>
+    </div>
+</p>

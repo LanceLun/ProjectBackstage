@@ -1,0 +1,35 @@
+﻿@model Customized_Shoes.dll.Models.ViewModels.ShoesChoosesVM
+
+@{
+    ViewBag.Title = "新建客製化選項";
+}
+
+<h2>新建客製化選項</h2>
+
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="row">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="mb-3">
+            @Html.LabelFor(model => model.OptinName, htmlAttributes: new { @class = "form-label" })
+                @Html.EditorFor(model => model.OptinName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.OptinName, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="mb-3">
+                <input type="submit" value="新建選項" class="btn btn-primary" />
+        </div>
+    </div>
+}
+
+<div class="btn btn-dark">
+    @Html.ActionLink("回到選項列表", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

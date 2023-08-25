@@ -1,0 +1,78 @@
+﻿@model Customized_Shoes.dll.Models.ViewModels.SupplierCreateVM
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>新增供應商</h2>
+
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="row">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="mb-3">
+            @Html.LabelFor(model => model.SupplierCompanyName, htmlAttributes: new { @class = "form-label" })
+                @Html.EditorFor(model => model.SupplierCompanyName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.SupplierCompanyName, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="mb-3">
+            @Html.LabelFor(model => model.HasCertificate, htmlAttributes: new { @class = "form-label" })
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.HasCertificate)
+                    @Html.ValidationMessageFor(model => model.HasCertificate, "", new { @class = "text-danger" })
+                </div>
+        </div>
+
+        <div class="mb-3">
+            @Html.LabelFor(model => model.Supply_Material, htmlAttributes: new { @class = "form-label" })
+                @Html.EditorFor(model => model.Supply_Material, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Supply_Material, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="mb-3">
+            @Html.LabelFor(model => model.SupplierCompanyPhone, htmlAttributes: new { @class = "form-label" })
+                @Html.EditorFor(model => model.SupplierCompanyPhone, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.SupplierCompanyPhone, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="mb-3">
+            @Html.LabelFor(model => model.SupplierCompanyEmail, htmlAttributes: new { @class = "form-label" })
+                @Html.EditorFor(model => model.SupplierCompanyEmail, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.SupplierCompanyEmail, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="mb-3">
+            @Html.LabelFor(model => model.SupplierCompanyAddress, htmlAttributes: new { @class = "form-label" })
+                @Html.EditorFor(model => model.SupplierCompanyAddress, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.SupplierCompanyAddress, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="mb-3">
+            @Html.LabelFor(model => model.SupplierCompanyNumber, htmlAttributes: new { @class = "form-label" })
+                @Html.EditorFor(model => model.SupplierCompanyNumber, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.SupplierCompanyNumber, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="mb-3">
+            @Html.LabelFor(model => model.SupplierStartDate, htmlAttributes: new { @class = "form-label" })
+                @Html.EditorFor(model => model.SupplierStartDate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.SupplierStartDate, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="mb-3">
+            <input type="submit" value="新建供應商" class="btn btn-primary" /> |
+            <div class="btn btn-dark">
+                @Html.ActionLink("回到供應商目錄", "Index")
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

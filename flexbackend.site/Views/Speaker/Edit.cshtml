@@ -1,0 +1,88 @@
+﻿@model Flex_Activity.dll.Models.ViewModels.SpeakerEditVM
+
+@{
+    ViewBag.Title = "Edit";
+}
+@section Styles{
+    <style>
+        .disabled-select {
+            background-color: lightgray;
+            pointer-events: none;
+            opacity: 0.9
+        }
+    </style>
+}
+
+<h2>講師資訊編輯</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        @*<h4>SpeakerEditVM</h4>*@
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="mb-3">
+            @Html.LabelFor(model => model.SpeakerId, htmlAttributes: new { @class = "form-label" })
+
+            @Html.EditorFor(model => model.SpeakerId, new { htmlAttributes = new { @class = "form-control disabled-select" } })
+            @Html.ValidationMessageFor(model => model.SpeakerId, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="mb-3">
+            @Html.LabelFor(model => model.SpeakerName, htmlAttributes: new { @class = "form-label" })
+
+            @Html.EditorFor(model => model.SpeakerName, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.SpeakerName, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="mb-3">
+            @Html.LabelFor(model => model.SpeakerPhone, htmlAttributes: new { @class = "form-label" })
+
+            @Html.EditorFor(model => model.SpeakerPhone, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.SpeakerPhone, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="mb-3">
+            @Html.LabelFor(model => model.fk_SpeakerFieldId, htmlAttributes: new { @class = "form-label" })
+
+            @Html.DropDownList("fk_SpeakerFieldId", null, htmlAttributes: new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.fk_SpeakerFieldId, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="mb-3">
+            @Html.LabelFor(model => model.SpeakerImg, htmlAttributes: new { @class = "form-label" })
+
+            @Html.EditorFor(model => model.SpeakerImg, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.SpeakerImg, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="mb-3">
+            @Html.LabelFor(model => model.fk_SpeakerBranchId, htmlAttributes: new { @class = "form-label" })
+
+            @Html.DropDownList("fk_SpeakerBranchId", null, htmlAttributes: new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.fk_SpeakerBranchId, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="mb-3">
+            @Html.LabelFor(model => model.SpeakerDescription, htmlAttributes: new { @class = "form-label" })
+
+            @Html.EditorFor(model => model.SpeakerDescription, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.SpeakerDescription, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="mb-3">
+            <input type="submit" value="Save" class="btn btn-primary" />
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

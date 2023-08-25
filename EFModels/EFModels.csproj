@@ -1,0 +1,140 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{00B42812-2141-4BA6-A813-EC3EBC4DC304}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>EFModels</RootNamespace>
+    <AssemblyName>EFModels</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Dapper, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.2.0.138\lib\net461\Dapper.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="EFModels\Activity.cs" />
+    <Compile Include="EFModels\ActivityCategory.cs" />
+    <Compile Include="EFModels\ActivityStatus.cs" />
+    <Compile Include="EFModels\AggregatedCounter.cs" />
+    <Compile Include="EFModels\AlternateAddress.cs" />
+    <Compile Include="EFModels\AppDbContext.cs" />
+    <Compile Include="EFModels\BlackList.cs" />
+    <Compile Include="EFModels\Branch.cs" />
+    <Compile Include="EFModels\CartItem.cs" />
+    <Compile Include="EFModels\ColorCategory.cs" />
+    <Compile Include="EFModels\Counter.cs" />
+    <Compile Include="EFModels\Coupon.cs" />
+    <Compile Include="EFModels\CouponCategory.cs" />
+    <Compile Include="EFModels\CouponSending.cs" />
+    <Compile Include="EFModels\CustomizedOrder.cs" />
+    <Compile Include="EFModels\CustomizedShoesPo.cs" />
+    <Compile Include="EFModels\Customized_materials.cs" />
+    <Compile Include="EFModels\Department.cs" />
+    <Compile Include="EFModels\Discount.cs" />
+    <Compile Include="EFModels\Hash.cs" />
+    <Compile Include="EFModels\Job.cs" />
+    <Compile Include="EFModels\JobParameter.cs" />
+    <Compile Include="EFModels\JobQueue.cs" />
+    <Compile Include="EFModels\JobTitle.cs" />
+    <Compile Include="EFModels\List.cs" />
+    <Compile Include="EFModels\logistics_companies.cs" />
+    <Compile Include="EFModels\Member.cs" />
+    <Compile Include="EFModels\MemberPoint.cs" />
+    <Compile Include="EFModels\MembershipLevel.cs" />
+    <Compile Include="EFModels\OneToOneReservation.cs" />
+    <Compile Include="EFModels\order.cs" />
+    <Compile Include="EFModels\orderItem.cs" />
+    <Compile Include="EFModels\order_statuses.cs" />
+    <Compile Include="EFModels\pay_methods.cs" />
+    <Compile Include="EFModels\pay_statuses.cs" />
+    <Compile Include="EFModels\PointHistory.cs" />
+    <Compile Include="EFModels\PointManage.cs" />
+    <Compile Include="EFModels\PointTradeIn.cs" />
+    <Compile Include="EFModels\Privilege.cs" />
+    <Compile Include="EFModels\Product.cs" />
+    <Compile Include="EFModels\ProductCategory.cs" />
+    <Compile Include="EFModels\ProductGroup.cs" />
+    <Compile Include="EFModels\ProductImg.cs" />
+    <Compile Include="EFModels\ProductSubCategory.cs" />
+    <Compile Include="EFModels\ProjectTag.cs" />
+    <Compile Include="EFModels\ProjectTagItem.cs" />
+    <Compile Include="EFModels\ReservationStatus.cs" />
+    <Compile Include="EFModels\SalesCategory.cs" />
+    <Compile Include="EFModels\Schema.cs" />
+    <Compile Include="EFModels\Server.cs" />
+    <Compile Include="EFModels\Set.cs" />
+    <Compile Include="EFModels\ShoesCategory.cs" />
+    <Compile Include="EFModels\ShoesChoos.cs" />
+    <Compile Include="EFModels\ShoesColorCategory.cs" />
+    <Compile Include="EFModels\ShoesGroup.cs" />
+    <Compile Include="EFModels\ShoesPicture.cs" />
+    <Compile Include="EFModels\ShoppingCart.cs" />
+    <Compile Include="EFModels\SizeCategory.cs" />
+    <Compile Include="EFModels\Speaker.cs" />
+    <Compile Include="EFModels\SpeakerField.cs" />
+    <Compile Include="EFModels\Staff.cs" />
+    <Compile Include="EFModels\StaffPermission.cs" />
+    <Compile Include="EFModels\State.cs" />
+    <Compile Include="EFModels\Supplier.cs" />
+    <Compile Include="EFModels\Type.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>此專案參考這部電腦上所缺少的 NuGet 套件。請啟用 NuGet 套件還原，以下載該套件。如需詳細資訊，請參閱 http://go.microsoft.com/fwlink/?LinkID=322105。缺少的檔案是 {0}。</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.props'))" />
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.targets'))" />
+  </Target>
+  <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" />
+</Project>

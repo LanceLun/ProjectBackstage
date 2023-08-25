@@ -1,0 +1,40 @@
+﻿@model Flex.Products.dll.Models.ViewModel.SalesCategoryEditVM
+
+@{
+    ViewBag.Title = "EditSalesCategory";
+}
+
+<h2>編輯銷售分類</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="mb-3 d-none">
+            @Html.LabelFor(model => model.SalesCategoryId, htmlAttributes: new { @class = "form-label" })
+
+                @Html.EditorFor(model => model.SalesCategoryId, new { htmlAttributes = new { @class = "form-control" ,@readonly= "readonly" } })
+                @Html.ValidationMessageFor(model => model.SalesCategoryId, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="mb-3">
+            @Html.LabelFor(model => model.SalesCategoryName, htmlAttributes: new { @class = "form-label" })
+
+                @Html.EditorFor(model => model.SalesCategoryName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.SalesCategoryName, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="mb-3">
+            <input type="submit" value="編輯" class="btn btn-primary" />
+            <input type="button" value="返回" class="btn btn-primary" onclick='location.href="@Url.Action("SalesCategoryIndex")"'/>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

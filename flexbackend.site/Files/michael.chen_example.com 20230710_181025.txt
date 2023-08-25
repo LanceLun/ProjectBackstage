@@ -1,0 +1,7 @@
+﻿from:g01.webapp@gmail.com
+to:michael.chen@example.com
+subject:[重設密碼通知]
+
+Hi Michael Chen,
+<br />
+請點擊此連結 [<a href='https://localhost:44349/Staffs/ResetPassword?staffId=35&confirmCode=d2a53c1db1454f9daaa06cd581dd4c8c' target='_blank'>我要重設密碼</a>], 以進行重設密碼, 如果您沒有提出申請, 請忽略本信, 謝謝

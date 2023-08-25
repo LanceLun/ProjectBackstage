@@ -1,0 +1,116 @@
+﻿@{
+    ViewBag.Title = "首頁";
+}
+
+@section Styles{
+    <style>
+        .box {
+            height: 250px;
+            cursor: pointer;
+            border: none;
+            color: #4d4d4d;
+        }
+
+            .box.box-blue {
+                background: #dcf6fe;
+            }
+
+                .box.box-blue:hover {
+                    background: #eafaff;
+                }
+
+            .box.box-orange {
+                background: #fde4ca;
+            }
+
+            .box.box-purple {
+                background: #e9e7fc;
+            }
+
+            .box .box-title {
+                font-size: 35px;
+            }
+
+            .box .box-body .number {
+                font-size: 65px;
+            }
+
+            .box .body-border {
+                border-bottom: 2px solid #fefefe
+            }
+
+        .btn-text {
+            padding: 4px 9px;
+            font-size: 18px;
+            background: #f6f5fe;
+        }
+
+        .box-blue .btn-text {
+            color: #296475;
+        }
+
+        .box-orange .btn-text {
+            color: #e0a36f;
+        }
+
+        .box-purple .btn-text {
+            color: #6f67c7;
+        }
+        .date{
+            font-size:25px;
+            font-weight:bold;
+            color:#797886;
+
+        }
+    </style>
+}
+<main>
+    <div class="d-flex mt-4  mb-4">
+        <h3 class="fs-1 fw-bold me-auto">今日更新</h3>
+        <div class="text-end mt-4 date"></div>
+    </div>
+    
+    <div class="row gx-4 row-cols-1 row-cols-md-2 row-cols-lg-2 row-cols-xl-3 bg-white rounded-2 py-5 px-3">
+
+
+        <div class="text-dark">
+            <div class="rounded-2 box mb-3 box-orange px-3">
+                <div class="box-title text-start pt-2 fw-bold">本日註冊會員</div>
+                <div class="box-body text-center p-3 body-border"><span class="number me-2 fw-bold">7</span><span class="fs-4">人</span></div>
+                <div class="box-footer d-flex py-2 align-items-end">
+                    <div class="me-auto fs-5 fw-bold"></div>
+                    <div class="rounded-4 btn-text fw-bold">查 詢</div>
+                </div>
+            </div>
+        </div>
+        <div class="text-dark">
+            <div class="rounded-2 box mb-3 box-purple px-3">
+                <div class="box-title text-start pt-2 fw-bold">本日成立訂單</div>
+                <div class="box-body text-center p-3 body-border"><span class="number me-2 fw-bold">56</span><span class="fs-4">筆</span></div>
+                <div class="box-footer d-flex py-2 align-items-end">
+                    <div class="me-auto fs-5 fw-bold"></div>
+                    <div class="rounded-4 btn-text fw-bold">查 詢</div>
+                </div>
+            </div>
+        </div>
+        <div class="text-dark">
+            <div class="rounded-2 box mb-3 box-blue px-3">
+                <div class="box-title text-start pt-2 fw-bold">本日新增商品</div>
+                <div class="box-body text-center p-3 body-border"><span class="number me-2 fw-bold">10</span><span class="fs-4">筆</span></div>
+                <div class="box-footer d-flex py-2 align-items-end">
+                    <div class="me-auto fs-5 fw-bold">由Ted</div>
+                    <div class="rounded-4 btn-text fw-bold">新 增</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+@section Scripts{
+    <script>
+        const dateElement = document.querySelector(".date");
+        const date = new Date();
+        const options = { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' };
+        const today = date.toLocaleString('en-US', options);
+        dateElement.textContent = today;
+    </script>
+}

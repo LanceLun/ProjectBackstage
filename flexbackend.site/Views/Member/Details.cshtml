@@ -1,0 +1,101 @@
+﻿@model Members.dll.Models.ViewsModels.Member.MemberDetailVM
+
+@{
+    ViewBag.Title = "Details";
+    var levels = ViewBag.LevelId;
+    //var behavior = ViewBag.Behavior;
+
+}
+
+<h2>會員詳細資訊</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.MemberId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MemberId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Age)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Age)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Gender)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.GenderStr)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Mobile)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Mobile)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Birthday)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Birthday)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Registration)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Registration)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.fk_LevelId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => levels)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.fk_BlackListId)
+
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.fk_BlackListIdStr)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("編輯", "Edit", new { memberId = Model.MemberId }) |
+    @Html.ActionLink("返回會員總覽", "Index")
+</p>

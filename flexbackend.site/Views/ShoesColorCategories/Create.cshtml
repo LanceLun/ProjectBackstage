@@ -1,0 +1,41 @@
+﻿@model Customized_Shoes.dll.Models.ViewModels.ShoesColorCategoryVM
+
+@{
+    ViewBag.Title = "新建主顏色分類";
+}
+
+<h2>新建主顏色分類</h2>
+
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="row">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="mb-3">
+            @Html.LabelFor(model => model.ColorName, htmlAttributes: new { @class = "form-label" })
+                @Html.EditorFor(model => model.ColorName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ColorName, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="mb-3">
+            @Html.LabelFor(model => model.ColorCode, htmlAttributes: new { @class = "form-label" })
+                @Html.EditorFor(model => model.ColorCode, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ColorCode, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="mb-3">
+                <input type="submit" value="新建分類" class="btn btn-primary" />
+        </div>
+    </div>
+}
+
+<div class="btn btn-dark">
+    @Html.ActionLink("回到分類列表", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

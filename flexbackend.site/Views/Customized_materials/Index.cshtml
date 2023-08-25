@@ -1,0 +1,129 @@
+﻿@model IEnumerable<Customized_Shoes.dll.Models.ViewModels.Customized_materialsVM>
+
+@{
+    ViewBag.Title = "材質管理";
+    var criteria = ViewBag.Criteria as Customized_Shoes.dll.Models.Exts.CustomizedMaterialsCriteria;
+}
+
+@section Styles {
+
+    <link href="~/lib/datatables/css/jquery.dataTables.css" rel="stylesheet" />
+}
+
+<h2>鞋類材質管理</h2>
+
+<p>
+
+</p>
+<div class="search-bar-container mb-4 d-flex">
+    <form method="get" class="me-auto w-100">
+        <div class="d-flex">
+            <div class="left d-flex me-auto">
+                @* 輸入框區域 寬度可移除下方class w-50 自行調整 *@
+                <div class="row">
+                    @*@Html.TextBoxFor(model => criteria.Name, new { @class = "form-control", placeholder = "搜尋..." })*@
+                    <input id="index_Search" class="form-control " name="criteria.Material_Name" type="text" value="@criteria.Material_Name" placeholder="搜尋材質...">
+                </div>
+                <div class="right">
+                    <button id="searchBtn" class="btn btn-primary">搜尋</button>
+                    @Html.ActionLink("新增材質", "Create", null, new { @class = "btn btn-primary" })
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<table id="indexMaterial" class="table table-striped table-hover">
+    <thead>
+        <tr>
+            @* 有class sort-btn 能當排序按鈕，點擊切換上下箭頭，不過資料排序function須自己處理 *@
+            @* 同時也有提供 th-col- 作為粗略每列寬度設定
+                th-col-0 至 th-col-20
+                超過100%資料不會溢出 也不會換行
+                如有細緻設定需求，可自己寫css設定寬度
+            *@
+            <th class="th-col-0 sticky">
+                <label class="form-check-label">
+                    <input class="form-check-input check-all" type="checkbox">
+                </label>
+            </th>
+            <th class="th-col-1">
+                @Html.DisplayNameFor(model => model.Material_Name)
+            </th>
+            <th>管理</th>
+        </tr>
+    </thead>
+    <tbody>
+        @* 如有照片要放
+            格式:
+            <td><div class="table-img-container"><img src="XXX.png" alt=""></div></td>
+        *@
+        @*  顯示資料內有定義了狀態框，
+            如有需展示狀態顏色，請在td內增加一個span，且定義class
+            有提供四種顏色:
+                綠色 : status-success
+                灰色 : status-dark
+                紅色 : status-danger
+                藍色 : status-primary
+            可依自己需求使用
+
+            格式: <td class="text-center"><span class="status-success}">進行中</span></td>
+        *@
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                @* 下方data-id後方欄位抓id，可方便勾選框抓資料 *@
+                <td class="sticky"><input class="form-check-input check-item" type="checkbox" data-id="@item.Shoesmaterial_Id"></td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Material_Name)
+                </td>
+                <td>
+                    <div class="manage-btn-container d-flex justify-content-center">
+                        <a href="@Url.Action("Edit", new { id = item.Shoesmaterial_Id  })" class="btn-edit me-1"><i class="bi bi-pencil-square"></i></a>
+                        <a href="@Url.Action("Delete", new { id = item.Shoesmaterial_Id  })" class="btn-del"><i class="bi bi-trash-fill"></i></a>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+</div>
+@section Scripts{
+    <script src="~/lib/datatables/js/jquery.dataTables.min.js"></script>
+    <script>
+
+        $(document).ready(function () {
+
+            $('#indexMaterial').DataTable(
+                {
+                    "searching": false,
+                    "paging": true, // 如果要顯示分頁器，設為 true
+                    "pageLength": 5, // 設定預設每頁顯示筆數
+                    "lengthMenu": [5, 10, 15, 20, "All"],
+                    oLanguage: {    // 中文化
+                        "sLengthMenu": "每頁顯示 _MENU_筆",
+                        "sZeroRecords": "沒有找到符合條件的資料",
+                        "sProcessing": "載入中...",
+                        "sInfo": "當前第 _START_ - _END_ 筆　共計 _TOTAL_ 筆",
+                        "sInfoEmpty": "沒有記錄",
+                        "sInfoFiltered": "(從 _MAX_ 條記錄中過濾)",
+                        "sSearch": "搜尋：",
+                        "oPaginate":
+                        {
+                            "sFirst": "首頁",
+                            "sPrevious": "前一頁",
+                            "sNext": "後一頁",
+                            "sLast": "尾頁"
+                        }
+                    },
+                    "columnDefs": [{
+                        "orderable": false,
+                        "targets": [0, 2]
+                    }],
+                    "order": [[1, 'asc']]
+                }
+            );
+        });
+
+    </script>
+}

@@ -1,0 +1,357 @@
+﻿@using Customized_Shoes.dll.Models.Exts
+@using Customized_Shoes.dll.Models.ViewModels
+@model IEnumerable<Customized_Shoes.dll.Models.ViewModels.CustomizedShoesIndexVM>
+
+@{
+    ViewBag.Title = "客製化商品管理";
+
+    var criteria = ViewBag.Criteria as ShoesSearchCriteria;
+    var shoesCategory = ViewBag.ShoesCategoryId as SelectList;
+
+}
+
+@section Styles {
+
+    <link href="~/lib/datatables/css/jquery.dataTables.css" rel="stylesheet" />
+}
+
+<h2>客製化商品管理</h2>
+
+<p>
+
+</p>
+<div class="search-bar-container mb-4 d-flex">
+    <form method="get" class="me-auto w-100">
+        <div class="d-flex">
+            <div class="left d-flex me-auto">
+                @* 輸入框區域 寬度可移除下方class w-50 自行調整 *@
+                <div class="col col-3 ">
+                    @*@Html.TextBoxFor(model => criteria.Name, new { @class = "form-control", placeholder = "搜尋..." })*@
+                    <input id="index_Search" class="form-control " name="criteria.Name" type="text" value="@criteria.Name" placeholder="搜尋...">
+                </div>
+                <div class="col col-3 ms-1">
+                    @Html.DropDownListFor(model => criteria.ShoesCategoryId, shoesCategory, new { @class = "form-select" })
+                </div>
+                <div class="col col-3 ms-1">
+                    @Html.DropDownListFor(model => criteria.Status, ViewBag.StatusOption as SelectList, new { @class = "form-select" })
+                </div>
+            </div>
+            <div class="right">
+                <button id="searchBtn" class="btn btn-primary">搜尋</button>
+                @Html.ActionLink("新增基底商品", "Create", null, new { @class = "btn btn-primary" })
+                <button class="btn btn-primary" onclick="editStatus()">儲存</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<table id="indexShoes" class="table table-striped table-hover">
+    <thead>
+        <tr>
+            <th class="th-col-0 sticky">
+                <input id="check-all-status" class="form-check-input check-all me-2" type="checkbox" onclick="getAllStatus(this)">
+                <label class="form-check-label" for="check-all-status">下架</label>
+            </th>
+            <th class="th-col-2 text-center">
+                @Html.DisplayNameFor(model => model.ShoesName)
+            </th>
+            <th class="th-col-2 text-center">
+                @Html.DisplayNameFor(model => model.ShoesDescription)
+            </th>
+            <th class="th-col-2 text-center">
+                @Html.DisplayNameFor(model => model.ShoesOrigin)
+            </th>
+            <th class="th-col-2 text-center">
+                @Html.DisplayNameFor(model => model.ShoesUnitPrice)
+            </th>
+            <th class="th-col-2 text-center">
+                @Html.DisplayNameFor(model => model.ShoesCategory)
+            </th>
+            <th class="th-col-2 text-center">
+                @Html.DisplayNameFor(model => model.ShoesColoeCategory)
+            </th>
+            <th class="th-col-2 text-center">
+                @Html.DisplayNameFor(model => model.StatusText)
+            </th>
+            <th class="th-col-2 text-center">管理</th>
+        </tr>
+    </thead>
+    <tbody>
+        @* 如有照片要放
+            格式:
+            <td><div class="table-img-container"><img src="XXX.png" alt=""></div></td>
+        *@
+        @*  顯示資料內有定義了狀態框，
+            如有需展示狀態顏色，請在td內增加一個span，且定義class
+            有提供四種顏色:
+                綠色 : status-success
+                灰色 : status-dark
+                紅色 : status-danger
+                藍色 : status-primary
+            可依自己需求使用
+
+            格式: <td class="text-center"><span class="status-success}">進行中</span></td>
+        *@
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                @* 下方data-id後方欄位抓id，可方便勾選框抓資料 *@
+                <td class="sticky text-center align-middle">
+                    <input class="form-check-input check-item" type="checkbox" data-id="@item.ShoesProductId" onclick="saveStatus(this)" @(item.Status ? "checked" : "") />
+                </td>
+                <td class="text-center align-middle">
+                    @Html.DisplayFor(modelItem => item.ShoesName)
+                </td>
+                <td class="text-center align-middle">
+                    @Html.DisplayFor(modelItem => item.ShoesDescription)
+                </td>
+                <td class="text-center align-middle">
+                    @Html.DisplayFor(modelItem => item.ShoesOrigin)
+                </td>
+                <td class="text-center align-middle">
+                    @Html.DisplayFor(modelItem => item.ShoesUnitPrice)
+                </td>
+                <td class="text-center align-middle">
+                    @Html.DisplayFor(modelItem => item.ShoesCategory)
+                </td>
+                <td class="text-center align-middle">
+                    @Html.DisplayFor(modelItem => item.ShoesColoeCategory)
+                </td>
+                <td>
+                    <span class="@(item.StatusText=="上架中"?"status-success":(item.StatusText=="已下架"?"status-dark":"status-primary"))">
+                        @Html.DisplayFor(modelItem => item.StatusText)
+                    </span>
+                </td>
+                <td class="text-center align-middle">
+                    <div class="manage-btn-container d-flex justify-content-center">
+                        <a href="@Url.Action("Edit", new { id = item.ShoesProductId  })" class="btn-edit me-1"><i class="bi bi-pencil-square"></i></a>
+                        <a href="@Url.Action("Details", new { id = item.ShoesProductId  })" class="btn-view me-1"><i class="bi bi-clipboard-check"></i></a>
+                        <a href="@Url.Action("EditImg", new {id=item.ShoesProductId })" class="btn-edit me-1"><i class="bi bi-image"></i></a>
+                        <a href="@Url.Action("Delete", new { id = item.ShoesProductId  })" class="btn-del"><i class="bi bi-trash-fill"></i></a>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@section Scripts{
+    <script src="~/lib/datatables/js/jquery.dataTables.min.js"></script>
+    <script>
+
+        $(document).ready(function () {
+
+            $('#indexShoes').DataTable(
+                {
+                    "searching": false,
+                    "paging": true, // 如果要顯示分頁器，設為 true
+                    "pageLength": 5, // 設定預設每頁顯示筆數
+                    "lengthMenu": [5, 10, 15, 20, "All"],
+                    oLanguage: {    // 中文化
+                        "sLengthMenu": "每頁顯示 _MENU_筆",
+                        "sZeroRecords": "沒有找到符合條件的資料",
+                        "sProcessing": "載入中...",
+                        "sInfo": "當前第 _START_ - _END_ 筆　共計 _TOTAL_ 筆",
+                        "sInfoEmpty": "沒有記錄",
+                        "sInfoFiltered": "(從 _MAX_ 條記錄中過濾)",
+                        "sSearch": "搜尋：",
+                        "oPaginate":
+                        {
+                            "sFirst": "首頁",
+                            "sPrevious": "前一頁",
+                            "sNext": "後一頁",
+                            "sLast": "尾頁"
+                        }
+                    },
+                    "columnDefs": [{
+                        "orderable": false,
+                        "targets": [0, 8]
+                    }],
+                    "order": [[1, 'asc']]
+                }
+            );
+
+            //重新載入畫面
+            function loadProducts() {
+                var criteria = {
+                    Name: $('#index_Search').val(),
+                    Status: $('#criteria_Status').val()
+                };
+                reSetIndexShoes(criteria);
+            }
+
+            function reSetIndexShoes(criteria) {
+                $.ajax({
+                    url: '@Url.Action("Index", "CustomizedShoesPoes")',
+                    type: 'POST',
+                    data: criteria,
+                    dataType: 'json',
+                    success: function (response) {
+                        // 請求成功後的處理邏輯
+                        //console.log(response);
+
+                        var table = $('.table tbody');
+                        table.empty();
+
+                        $.each(response, function (index, shoes) {
+                            var row = `
+                    <tr>
+                        <td class="sticky text-center align-middle">
+                            <input class="form-check-input check-item" type="checkbox" data-id="${shoes.ShoesProductId}" onclick="saveStatus(this)" ${shoes.Status ? "checked" : ""} />
+                        </td>
+                        <td class="text-center align-middle">
+                            ${shoes.ShoesName}
+                        </td>
+                        <td class="text-center align-middle">
+                            ${shoes.ShoesDescription}
+                        </td>
+                        <td class="text-center align-middle">
+                            ${shoes.ShoesOrigin}
+                        </td>
+                        <td class="text-center align-middle">
+                            ${shoes.ShoesUnitPrice.toLocaleString()}
+                        </td>
+                        <td class="text-center align-middle">
+                            ${shoes.ShoesCategory}
+                        </td>
+                        <td class="text-center align-middle">
+                            ${shoes.ShoesColoeCategory}
+                        </td>
+                        <td class="text-center align-middle">
+                            ${shoes.StatusText}
+                        </td>
+                        <td class="text-center align-middle">
+                            <div class="manage-btn-container">
+                                <a href="/CustomizedShoesPoes/Edit?ShoesProductId=${shoes.ShoesProductId}" class="btn-edit"><i class="bi bi-pencil-square"></i></a>
+                                <a href="/CustomizedShoesPoes/Details?ShoesProductId=${shoes.ShoesProductId}" class="btn-view"><i class="bi bi-clipboard-check"></i></a>
+                                <a href="/CustomizedShoesPoes/EditImg?ShoesProductId=${shoes.ShoesProductId}" class="btn-edit me-1"><i class="bi bi-image"></i></a>
+                                <a href="/CustomizedShoesPoes/Delete?ShoesProductId=${shoes.ShoesProductId}" class="btn-del"><i class="bi bi-trash-fill"></i></a>
+                            </div>
+                        </td>
+                    </tr>`;
+
+                        table.append(row);
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        // 請求失敗時的處理邏輯
+                        console.log(error);
+                    }
+                });
+            }
+
+            // 在頁面載入完成時觸發請求
+            loadShoes();
+
+            // 監聽搜尋按鈕的點擊事件
+            $('#searchBtn').click(function (e) {
+                e.preventDefault();
+                loadShoes();
+            });
+        });
+
+        var shoesData = [];
+
+        function saveStatus(element) {
+            let shoesproductId = element.getAttribute("data-id");
+            if (shoesData.includes(shoesproductId)) {
+                shoesData.splice(shoesData.indexOf(shoesproductId), 1);
+            }
+            else
+            {
+                productData.push(shoesproductId);
+            }
+            console.log(shoesData);
+        };
+
+        function getAllStatus(element) {
+            var checked = $(element).prop("checked");
+            $(".check-item").prop("checked", checked);
+
+            shoesData = [];
+
+            $(".check-item").each(function () {
+                var shoesproductId = $(this).data("id");
+                shoesData.push(shoesproductId);
+            });
+
+            console.log(shoesData);
+        };
+
+        function editStatus() {
+            var CustomizedShoesIdAndStatus = [];
+            shoesData.forEach(shoesproductId => {
+                var status = $('.check-item[data-id="' + shoesproductId + '"]').prop('checked');
+                CustomizedShoesIdAndStatus.push({ ShoesProductId: productId, Status: status });
+            });
+            console.log(CustomizedShoesIdAndStatus);
+
+            $.ajax({
+                type: "POST",
+                url: "/CustomizedShoesPoes/EditShoesStatus",
+                data: JSON.stringify(CustomizedShoesIdAndStatus),
+                contentType: "application/json",
+                success: function (response) {
+                    loadShoes();
+                    //window.location.reload();
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        }
+    </script>
+
+    <script>
+        window.onload = function () {
+            // 替排序按鈕寫入排序箭頭出現事件
+            document.querySelectorAll(".sort-btn").forEach(item => {
+                item.addEventListener("click", function () {
+                    // sortClickHandler 可寫入第二個參數，是委派
+                    sortClickHandler(this);
+                });
+            });
+
+            function sortClickHandler(targetBtn, callback = null) {
+                truncateSortAttr(targetBtn);
+                resetSortBtns();
+
+                var sortValue = targetBtn.getAttribute('sort');
+                var newSortValue = (sortValue && sortValue == 'asc') ? 'desc' : 'asc';
+                setSort(targetBtn, newSortValue);
+
+                callback && callback();
+            }
+
+            // 給按鈕加上排序箭頭
+            function setSort(sortBtn, setSort) {
+                sortBtn.setAttribute('sort', setSort);
+                if (setSort == 'asc') {
+                    sortBtn.innerHTML += '<i class="bi bi-arrow-up-short"></i>';
+                } else if (setSort == 'desc') {
+                    sortBtn.innerHTML += '<i class="bi bi-arrow-down-short"></i>';
+                }
+            }
+
+            // 清空所有排序按鈕的箭頭
+            function resetSortBtns() {
+                var sortBtns = document.querySelectorAll(".sort-btn");
+                sortBtns.forEach(function (btn) {
+                    if (btn.innerHTML.includes("</i>")) {
+                        btn.innerHTML = btn.innerHTML.substring(0, btn.innerHTML.indexOf("<"));
+                    }
+                });
+            }
+
+            // 清空被點擊外的其他按鈕的排序attr
+            function truncateSortAttr(thisBtn = null) {
+                var sortBtns = document.querySelectorAll(".sort-btn");
+                sortBtns.forEach(function (btn) {
+                    if (btn !== thisBtn) {
+                        btn.removeAttribute('sort');
+                    }
+                });
+            }
+        };
+    </script>
+}

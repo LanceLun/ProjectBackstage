@@ -1,0 +1,83 @@
+﻿@model Members.dll.Models.ViewsModels.StaffsCreateVM
+
+@{
+    ViewBag.Title = "CreateStaff";
+    SelectList gender = ViewBag.Gender as SelectList;
+}
+
+<h2>新增員工</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="row">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="mb-3">
+            @Html.LabelFor(model => model.fk_DepartmentId, htmlAttributes: new { @class = "form-label" })
+            @Html.DropDownListFor(model => model.fk_DepartmentId, ViewBag.DepartmentId as SelectList, new { @class = "form-select" })
+            @Html.ValidationMessageFor(model => model.fk_DepartmentId, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="mb-3">
+            @Html.LabelFor(model => model.fk_TitleId, htmlAttributes: new { @class = "form-label" })
+            @Html.DropDownListFor(model => model.fk_TitleId, ViewBag.TitleId as SelectList, new { @class = "form-select" })
+            @Html.ValidationMessageFor(model => model.fk_TitleId, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="mb-3">
+            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "form-label" })
+            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="mb-3">
+            @Html.LabelFor(model => model.Age, htmlAttributes: new { @class = "form-label" })
+            @Html.EditorFor(model => model.Age, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Age, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="mb-3">
+            @Html.LabelFor(model => model.Birthday, htmlAttributes: new { @class = "form-label" })
+            @*<input type="text" class="form-control" name="Birthday" id="Birthday" value="@(Model.Birthday.HasValue?Model.Birthday.Value.ToString("yyyy'/'MM'/'dd"):string.Empty)">*@
+            @Html.EditorFor(model => model.Birthday, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Birthday, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="mb-3">
+            @Html.LabelFor(model => model.GenderStr, htmlAttributes: new { @class = "form-label" })
+            @Html.DropDownListFor(model => model.Gender, gender, new { @class = "form-select" })
+            @Html.ValidationMessageFor(model => model.Gender, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="mb-3">
+            @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "form-label" })
+            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="mb-3">
+            @Html.LabelFor(model => model.fk_PermissionsId, htmlAttributes: new { @class = "form-label" })
+            @Html.DropDownListFor(model => model.fk_PermissionsId, ViewBag.PermissionsId as SelectList, new { @class = "form-select" })
+            @Html.ValidationMessageFor(model => model.fk_PermissionsId, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="mb-3">
+            <input type="submit" value="新增" class="btn btn-primary" />
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("返回會員名單總覽", "StaffList")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(function () {
+            $("#Birthday").datepicker({ dateFormat: 'yy/mm/dd' });
+        })
+    </script>
+}

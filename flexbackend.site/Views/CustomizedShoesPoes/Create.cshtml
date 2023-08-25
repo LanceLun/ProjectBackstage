@@ -1,0 +1,147 @@
+﻿@model Customized_Shoes.dll.Models.ViewModels.CustomizedShoesCreateVM
+
+@{
+    ViewBag.Title = "新增基底商品";
+    var shoesCategory = ViewBag.ShoesCategoryId as SelectList;
+    var colorCategory = ViewBag.ShoesColor as SelectList;
+}
+
+<h2>新增基底商品</h2>
+
+
+@using (Html.BeginForm("Create", "CustomizedShoesPoes", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="row">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="mb-3">
+            @Html.LabelFor(model => model.ShoesName, htmlAttributes: new { @class = "form-label" })
+            @Html.EditorFor(model => model.ShoesName, new { htmlAttributes = new { @class = "form-control", placeholder = "鞋種編號" } })
+            @Html.ValidationMessageFor(model => model.ShoesName, "", new { @class = "text-danger" })
+        </div>
+        <div class="col-12">
+            <div class="mb-3">
+                @Html.LabelFor(model => model.ShoesDescription, htmlAttributes: new { @class = "form-label" })
+                @Html.EditorFor(model => model.ShoesDescription, new { htmlAttributes = new { @class = "form-control", placeholder = "商品描述" } })
+                @Html.ValidationMessageFor(model => model.ShoesDescription, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="mb-3">
+            @Html.LabelFor(model => model.ShoesOrigin, htmlAttributes: new { @class = "form-label" })
+            @Html.EditorFor(model => model.ShoesOrigin, new { htmlAttributes = new { @class = "form-control", placeholder = "產地" } })
+            @Html.ValidationMessageFor(model => model.ShoesOrigin, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="mb-3">
+            @Html.LabelFor(model => model.ShoesUnitPrice, htmlAttributes: new { @class = "form-label" })
+            @Html.EditorFor(model => model.ShoesUnitPrice, new { htmlAttributes = new { @class = "form-control", placeholder = "產品售價" } })
+            @Html.ValidationMessageFor(model => model.ShoesUnitPrice, "", new { @class = "text-danger" })
+        </div>
+        <div class="mb-3">
+            @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "form-label" })
+            <div class="checkbox">
+                @Html.EditorFor(model => model.Status)
+                @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="mb-3">
+            @*@Html.LabelFor(model => model.fk_ShoesCategoryId, "fk_ShoesCategoryId", htmlAttributes: new { @class = "form-label" })*@
+            <label class="form-label" for="fk_ShoesCategoryId">功能分類</label>
+            @Html.DropDownListFor(model => model.fk_ShoesCategoryId, ViewBag.ShoesCategoryId as SelectList, new { @class = "form-select" })
+            @Html.ValidationMessageFor(model => model.fk_ShoesCategoryId, "", new { @class = "text-danger" })
+        </div>
+        <div class="mb-3">
+            @*@Html.LabelFor(model => model.fk_ShoesColorId, "fk_ShoesColorId", htmlAttributes: new { @class = "form-label" })*@
+            <label class="form-label" for="fk_ShoesColorId">主顏色分類</label>
+            @Html.DropDownListFor(model => model.fk_ShoesColorId, ViewBag.ShoesColor as SelectList, new { @class = "form-select" })
+            @Html.ValidationMessageFor(model => model.fk_ShoesColorId, "", new { @class = "text-danger" })
+        </div>
+
+        <div id="createImg">
+            <div id="previewImages"></div>
+        </div>
+
+        <div class="mb-3">
+            @Html.LabelFor(model => model.ImgPaths, htmlAttributes: new { @class = "form-label" })
+            <input type="file" name="CreateFile" id="createFile" class="form-control" multiple />
+            @Html.ValidationMessageFor(model => model.ImgPaths, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="mb-3">
+            <input id="save" type="submit" value="新增" class="btn btn-primary" />
+            <input type="button" value="取消" class="btn btn-primary" onclick='location.href="@Url.Action("Index")"' />
+        </div>
+    </div>
+}
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            checkImg();
+        });
+
+        $(document).on('click', '.deleteImgBtn', function () {
+            $(this).parent(".img-group").remove();
+            updateProductImg();
+            updateFileCount();
+            clearFileInput();
+        });
+
+        function checkImg() {
+            var maxSize = 2 * 1024 * 1024;
+            $('input[type="file"]').change(function (e) {
+                var files = e.target.files;
+                if (files && files.length > 0) {
+                    $('#previewImages').empty(); // 清空预览区域
+                    for (var i = 0; i < files.length; i++) {
+                        if (files[i].size < maxSize) {
+                            var reader = new FileReader();
+                            reader.onload = function (e) {
+                                var image = $('<img>');
+                                image.attr('src', e.target.result);
+                                image.attr('alt', 'Preview');
+                                image.css('width', '150px');
+                                image.css('height', '150px');
+
+                                var deleteBtn = $('<button>');
+                                deleteBtn.attr('type', 'button');
+                                deleteBtn.addClass('deleteImgBtn btn btn-danger');
+                                deleteBtn.text('删除');
+
+                                var imgGroup = $('<div>');
+                                imgGroup.addClass('img-group');
+                                imgGroup.append(image);
+                                imgGroup.append(deleteBtn);
+
+                                $('#previewImages').append(imgGroup);
+                            };
+                            reader.readAsDataURL(files[i]);
+                        } else {
+                            alert("照片超過2MB");
+                        }
+                    }
+                } else {
+                    $('#previewImages').empty(); // 清空预览区域
+                }
+                updateFileCount(); // 更新文件数量
+            });
+        }
+
+        function updateFileCount() {
+            var fileInput = $('#createFile');
+            var fileCount = fileInput[0].files.length;
+            fileInput.data('count', fileCount); // 使用 data() 方法更新属性值
+        }
+
+        function clearFileInput() {
+            var fileInput = $('#createFile');
+            fileInput.val(''); // 清空文件输入字段的值
+            fileInput.wrap('<form>').closest('form').get(0).reset();
+            fileInput.unwrap();
+        }
+    </script>
+
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -1,0 +1,155 @@
+﻿@model Orders.ViewModels.CombineVM
+
+@{
+    ViewBag.Title = "Logistics_companiesIndex";
+}
+
+<style>
+    .table-container {
+        display: inline-block;
+        margin-right: 60px;
+    }
+
+     table {
+            font-size: 20px;
+            height: 100%;
+        }
+
+        .table-container table thead {
+            background-color: #25650a;
+            color: forestgreen;
+        }
+
+        .table-container table td,
+        .table-container table th {
+            padding-right:150px; /* 調整文字間距 */
+        }
+</style>
+
+<h2>訂單相關管理</h2>
+
+<p>
+
+</p>
+<div class="search-bar-container d-flex">
+    <!--<div class=" me-auto">-->
+    @*輸入框區域 寬度可移除下方class w-50 自行調整
+        <div class="w-50">
+            <div class="input-group">
+                    <input class="form-control search-bar" type="text" placeholder="搜尋...">
+                </div>
+        </div>*@
+    <!--</div>-->
+
+
+    <div class="left m-3">
+        <a href="@Url.Action("Create")" class="btn btn-primary text-bg-light">
+            <i class="bi bi-plus-lg"></i> 新增物流
+        </a>
+    </div>
+    <div class="right m-3">
+        <a href="@Url.Action("createPay")" class="btn btn-primary text-bg-light">
+            <i class="bi bi-plus-lg"></i> 新增付款方式
+        </a>
+    </div>
+</div>
+<div class="table-container w-1000" s>
+    <table style="border: dotted; background-color:aquamarine" >
+        <thead>
+            <tr>
+                <th>物流名稱</th>
+                <th>電話</th>
+                <th>備註</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var company in Model.Companies)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => company.name)</td>
+                    <td>@Html.DisplayFor(modelItem => company.tel)</td>
+                    <td>@Html.DisplayFor(modelItem => company.logistics_description)</td>
+                    <td @*class="text-center align-middle"*@>
+                        <div @*class="d-flex"*@>
+                            <a href="@Url.Action("Edit", new {id=company.Id })" class="btn-edit me-1"><i class="bi bi-pencil-square"></i></a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div class="table-container">
+    <table style="font-size: 20px; border: dotted; background-color:aquamarine">
+        <thead>
+            <tr>
+
+                <th>付款方式</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var method in Model.PayMethods)
+            {
+                <tr>
+
+                    <td>@Html.DisplayFor(modelItem => method.pay_method)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+@section Scripts{
+    <script>
+        window.onload = function () {
+            // 替排序按鈕寫入排序箭頭出現事件
+            document.querySelectorAll(".sort-btn").forEach(item => {
+                item.addEventListener("click", function () {
+                    // sortClickHandler 可寫入第二個參數，是委派
+                    sortClickHandler(this);
+                });
+            });
+
+            function sortClickHandler(targetBtn, callback = null) {
+                truncateSortAttr(targetBtn);
+                resetSortBtns();
+
+                var sortValue = targetBtn.getAttribute('sort');
+                var newSortValue = (sortValue && sortValue == 'asc') ? 'desc' : 'asc';
+                setSort(targetBtn, newSortValue);
+
+                callback && callback();
+            }
+
+            // 給按鈕加上排序箭頭
+            function setSort(sortBtn, setSort) {
+                sortBtn.setAttribute('sort', setSort);
+                if (setSort == 'asc') {
+                    sortBtn.innerHTML += '<i class="bi bi-arrow-up-short"></i>';
+                } else if (setSort == 'desc') {
+                    sortBtn.innerHTML += '<i class="bi bi-arrow-down-short"></i>';
+                }
+            }
+
+            // 清空所有排序按鈕的箭頭
+            function resetSortBtns() {
+                var sortBtns = document.querySelectorAll(".sort-btn");
+                sortBtns.forEach(function (btn) {
+                    if (btn.innerHTML.includes("</i>")) {
+                        btn.innerHTML = btn.innerHTML.substring(0, btn.innerHTML.indexOf("<"));
+                    }
+                });
+            }
+
+            // 清空被點擊外的其他按鈕的排序attr
+            function truncateSortAttr(thisBtn = null) {
+                var sortBtns = document.querySelectorAll(".sort-btn");
+                sortBtns.forEach(function (btn) {
+                    if (btn !== thisBtn) {
+                        btn.removeAttribute('sort');
+                    }
+                });
+            }
+        };
+    </script>
+}

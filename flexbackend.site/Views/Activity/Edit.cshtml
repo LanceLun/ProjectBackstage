@@ -1,0 +1,213 @@
+﻿@model Flex_Activity.dll.Models.ViewModels.ActivityEditVM
+
+@{
+    ViewBag.Title = "Edit";
+}
+@section Styles{
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <style>
+        .disabled-select {
+            background-color: lightgray;
+            pointer-events: none;
+            opacity: 0.9
+        }
+
+        .hide-field {
+            display: none;
+        }
+
+
+        .no-resize {
+            resize: none;
+        }
+    </style>
+}
+<h2>活動資訊編輯</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        @*<h4>ActivityEditVM</h4>*@
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="mb-3">
+            @Html.LabelFor(model => model.ActivityId, htmlAttributes: new { @class = "form-label" })
+
+            @Html.EditorFor(model => model.ActivityId, new { htmlAttributes = new { @class = "form-control disabled-select" } })
+            @Html.ValidationMessageFor(model => model.ActivityId, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="mb-3">
+            @Html.LabelFor(model => model.ActivityName, htmlAttributes: new { @class = "form-label" })
+
+            @Html.EditorFor(model => model.ActivityName, new { htmlAttributes = new { @class = "form-control", id = "ActivityName" } })
+            @Html.ValidationMessageFor(model => model.ActivityName, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="mb-3 disabled">
+            @Html.LabelFor(model => model.fk_ActivityCategoryId, htmlAttributes: new { @class = "form-label" })
+
+            @Html.DropDownList("fk_ActivityCategoryId", null, htmlAttributes: new { @class = "form-select", id = "fk_ActivityCategoryId" })
+            @Html.ValidationMessageFor(model => model.fk_ActivityCategoryId, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="mb-3 disabled">
+            @Html.LabelFor(model => model.ActivityDate, htmlAttributes: new { @class = "form-label" })
+
+            @Html.EditorFor(model => model.ActivityDate, new { htmlAttributes = new { @class = "form-control ", id = "ActivityDate" } })
+            @Html.ValidationMessageFor(model => model.ActivityDate, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="mb-3">
+            @Html.LabelFor(model => model.ActivityPlace, htmlAttributes: new { @class = "form-label" })
+
+            @Html.EditorFor(model => model.ActivityPlace, new { htmlAttributes = new { @class = "form-control", id = "ActivityPlace" } })
+            @Html.ValidationMessageFor(model => model.ActivityPlace, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="mb-3">
+            @Html.LabelFor(model => model.ActivityBookStartTime, htmlAttributes: new { @class = "form-label" })
+            <input type="text" class="form-control  " name="ActivityBookStartTime" id="ActivityBookStartTime" value="@(Model.ActivityBookStartTime.ToString("yyyy'/'MM'/'dd"))">
+            @*@Html.EditorFor(model => model.ActivityBookStartTime, new { htmlAttributes = new { @class = "form-control", id = "ActivityBookStartTime" } })*@
+            @Html.ValidationMessageFor(model => model.ActivityBookStartTime, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="mb-3">
+            @Html.LabelFor(model => model.ActivityBookEndTime, htmlAttributes: new { @class = "form-label" })
+            <input type="text" class="form-control  " name="ActivityBookEndTime" id="ActivityBookEndTime" value="@(Model.ActivityBookEndTime.ToString("yyyy'/'MM'/'dd"))">
+            @*@Html.EditorFor(model => model.ActivityBookEndTime, new { htmlAttributes = new { @class = "form-control", id = "ActivityBookEndTime" } })*@
+            @Html.ValidationMessageFor(model => model.ActivityBookEndTime, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="mb-3">
+            @Html.LabelFor(model => model.fk_SpeakerId, htmlAttributes: new { @class = "form-label" })
+
+            @Html.DropDownList("fk_SpeakerId", null, htmlAttributes: new { @class = "form-select", id = "fk_SpeakerId" })
+            @Html.ValidationMessageFor(model => model.fk_SpeakerId, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="mb-3">
+            @Html.LabelFor(model => model.ActivityImage, htmlAttributes: new { @class = "form-label" })
+
+            @Html.EditorFor(model => model.ActivityImage, new { htmlAttributes = new { @class = "form-control", id = "ActivityImage" } })
+            @Html.ValidationMessageFor(model => model.ActivityImage, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="mb-3">
+            @Html.LabelFor(model => model.ActivityAge, htmlAttributes: new { @class = "form-label" })
+
+            @Html.EditorFor(model => model.ActivityAge, new { htmlAttributes = new { @class = "form-control", id = "ActivityAge" } })
+            @Html.ValidationMessageFor(model => model.ActivityAge, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="mb-3">
+            @Html.LabelFor(model => model.ActivitySalePrice, htmlAttributes: new { @class = "form-label" })
+
+            @Html.EditorFor(model => model.ActivitySalePrice, new { htmlAttributes = new { @class = "form-control", id = "ActivitySalePrice" } })
+            @Html.ValidationMessageFor(model => model.ActivitySalePrice, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="mb-3">
+            @Html.LabelFor(model => model.ActivityOriginalPrice, htmlAttributes: new { @class = "form-label" })
+
+            @Html.EditorFor(model => model.ActivityOriginalPrice, new { htmlAttributes = new { @class = "form-control", id = "ActivityOriginalPrice" } })
+            @Html.ValidationMessageFor(model => model.ActivityOriginalPrice, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="mb-3">
+            @Html.LabelFor(model => model.ActivityDescription, htmlAttributes: new { @class = "form-label" })
+
+            @Html.TextAreaFor(model => model.ActivityDescription, new { @class = "form-control no-resize", style = "height: 200px; width: 700px;", id = "ActivityDescription" })
+            @Html.ValidationMessageFor(model => model.ActivityDescription, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="mb-3 hide-field">
+            @Html.LabelFor(model => model.fk_ActivityStatusId, htmlAttributes: new { @class = "form-label" })
+
+            @Html.EditorFor(model => model.fk_ActivityStatusId, new { htmlAttributes = new { @class = "form-control", id = "fk_ActivityStatusId", } })
+            @Html.ValidationMessageFor(model => model.fk_ActivityStatusId, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="mb-3">
+            <input type="submit" value="Save" class="btn btn-primary" />
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("回到活動列表", "Index")
+</div>
+
+
+
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @*<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>*@
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script>
+
+        $(document).ready(function () {
+            //flatpickr(".dateTimePicker", {
+            //    enableTime: true,
+            //    dateFormat: "Y-m-d H:i",
+            //});
+
+            //flatpickr(".datePicker", {
+            //    enableTime: false,
+            //    dateFormat: "Y-m-d",
+            //});
+
+            var fk_ActivityStatusId = $("#fk_ActivityStatusId").val();
+
+            setOthersReadonly(fk_ActivityStatusId);
+
+            //当statusId的值发生改变的时候，重新设置其他属性的readonly属性
+            $("#fk_ActivityStatusId").change(function () {
+                var statusId = $(this).val();
+                console.log(statusId);
+                setOthersReadonly(statusId);
+                //dropDownDisabled(statusId);
+            });
+
+            function setOthersReadonly(statusId) {
+                if (statusId == "2") {
+                    //已上架
+                    $("#ActivityOriginalPrice, #ActivityName, #ActivityDate, #ActivityPlace, #ActivityBookStartTime, #ActivityBookEndTime, #ActivityImage, #ActivityAge, #ActivitySalePrice, #ActivityOriginalPrice").prop("readonly", true);
+                    $("#fk_ActivityCategoryId, #fk_SpeakerId, #ActivityOriginalPrice, #ActivityName, #ActivityDate, #ActivityPlace, #ActivityBookStartTime, #ActivityBookEndTime, #ActivityImage, #ActivityAge, #ActivitySalePrice, #ActivityOriginalPrice").addClass("disabled-select");
+
+                }
+                else if (statusId == "3") {
+                    $("#ActivityOriginalPrice, #ActivityName, #ActivityDate, #ActivityPlace, #ActivityBookStartTime, #ActivityBookEndTime, #ActivityImage, #ActivityAge, #ActivitySalePrice, #ActivityOriginalPrice, #ActivityDescription").prop("readonly", true);
+                    $("#fk_ActivityCategoryId, #fk_SpeakerId").addClass("disabled-select");
+
+                }
+                else {
+                    $("#ActivityOriginalPrice, #ActivityName, #fk_ActivityCategoryId, #ActivityDate, #ActivityPlace, #ActivityBookStartTime, #ActivityBookEndTime, #fk_SpeakerId, #ActivityImage, #ActivityAge, #ActivitySalePrice, #ActivityOriginalPrice").prop("readonly", false);
+                    $("#fk_ActivityCategoryId, #fk_SpeakerId").removeClass("disabled-select");
+                    flatpickr("#ActivityDate", {
+                        enableTime: true,
+                        dateFormat: "Y-m-d H:i"
+                    });
+
+                    flatpickr("#ActivityBookStartTime, #ActivityBookEndTime", {
+                        enableTime: false,
+                        dateFormat: "Y-m-d"
+                    });
+                }
+            }
+        });
+
+
+
+    </script>
+}
+
+
